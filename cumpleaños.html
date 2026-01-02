@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumpleaños Jóvenes - 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --azul-cielo: #4da3ff;
+            --azul-oscuro: #2f8cff;
+            --negro: #111;
+            --blanco: #ffffff;
+            --gris: #f2f2f2;
+            --azul-claro: #eaf3ff;
+            --verde: #4CAF50;
+            --rojo: #f44336;
+            --naranja: #ff9800;
+            --amarillo: #ffd700;
+            --rosa: #ff69b4;
+            --morado: #9b59b6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f9ff, #e3f2fd);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Decoración de fondo */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(77, 163, 255, 0.08) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 105, 180, 0.06) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.04) 0%, transparent 30%);
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: var(--blanco);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+            margin-top: 30px;
+            border: 1px solid rgba(77, 163, 255, 0.15);
+        }
+
+        /* Header mejorado */
+        .main-header {
+            background: linear-gradient(135deg, var(--azul-cielo), var(--azul-oscuro));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-header h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-header h1 i {
+            font-size: 2.5rem;
+            color: var(--amarillo);
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Formulario renovado */
+        .form-section {
+            padding: 40px;
+            background: linear-gradient(to bottom, var(--azul-claro), #f8fbff);
+            position: relative;
+        }
+
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .input-card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(77, 163, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .input-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: rgba(77, 163, 255, 0.4);
+        }
+
+        .input-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(77, 163, 255, 0.1);
+        }
+
+        .input-header i {
+            font-size: 1.5rem;
+            color: var(--azul-cielo);
+            background: rgba(77, 163, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-header h3 {
+            font-size: 1.4rem;
+            color: var(--azul-oscuro);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--negro);
+            font-size: 1.05rem;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--azul-cielo);
+            font-size: 1.2rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px 16px 55px;
+            border: 2px solid #e1e8f0;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            background: #fafcff;
+        }
+
+        input:focus {
+            border-color: var(--azul-cielo);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(77, 163, 255, 0.15);
+            background: white;
+        }
+
+        /* Botones mejorados */
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 18px 30px;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--azul-cielo), var(--azul-oscuro));
+            color: white;
+            box-shadow: 0 8px 25px rgba(47, 140, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(47, 140, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--naranja), #ff8c00);
+            color: white;
+            box-shadow: 0 8px 25px rgba(255, 152, 0, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(255, 152, 0, 0.4);
+        }
+
+        /* Estadísticas */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(77, 163, 255, 0.1), rgba(255, 105, 180, 0.05));
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            border: 1px solid rgba(77, 163, 255, 0.15);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--azul-cielo);
+        }
+
+        .stat-count {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--azul-oscuro);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--negro);
+            opacity: 0.8;
+        }
+
+        /* Sección de meses */
+        .results-section {
+            padding: 40px;
+            background: white;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--azul-oscuro);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--azul-cielo), var(--rosa));
+            border-radius: 2px;
+        }
+
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .month-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), #f8fbff);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(77, 163, 255, 0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .month-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(77, 163, 255, 0.3);
+        }
+
+        .month-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--azul-cielo), var(--rosa), var(--amarillo));
+        }
+
+        .month-header {
+            background: linear-gradient(135deg, rgba(77, 163, 255, 0.9), rgba(47, 140, 255, 0.9));
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .month-header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .month-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .month-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .birthdays-list {
+            list-style: none;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .birthday-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(77, 163, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .birthday-item:hover {
+            transform: translateX(5px);
+            background: rgba(77, 163, 255, 0.05);
+            padding-left: 10px;
+            padding-right: 10px;
+            margin: 0 -10px;
+            border-radius: 10px;
+        }
+
+        .birthday-item:last-child {
+            border-bottom: none;
+        }
+
+        .person-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .person-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--azul-cielo), var(--rosa));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .person-details {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .person-name {
+            font-weight: 700;
+            color: var(--negro);
+            font-size: 1.1rem;
+        }
+
+        .birth-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .age-badge {
+            background: linear-gradient(135deg, var(--verde), #43a047);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3);
+            margin-left: 10px;
+        }
+
+        /* Botones de acción */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-left: 10px;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, var(--azul-cielo), var(--azul-oscuro));
+            color: white;
+        }
+
+        .edit-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(77, 163, 255, 0.4);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, var(--rojo), #d32f2f);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.4);
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 60px 40px;
+            color: #888;
+            font-size: 1.2rem;
+            background: linear-gradient(135deg, rgba(77, 163, 255, 0.05), rgba(255, 105, 180, 0.05));
+            border-radius: 20px;
+            margin: 20px;
+            border: 2px dashed rgba(77, 163, 255, 0.3);
+        }
+
+        .empty-message i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+            color: var(--azul-cielo);
+        }
+
+        /* Modal de edición */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--azul-cielo), var(--azul-oscuro));
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-footer {
+            padding: 20px 30px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+            width: 100%;
+            padding: 25px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(77, 163, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .footer-icons i {
+            font-size: 1.8rem;
+            color: var(--azul-cielo);
+            transition: all 0.3s;
+        }
+
+        .footer-icons i:hover {
+            color: var(--rosa);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin-top: 10px;
+                border-radius: 20px;
+            }
+
+            .main-header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-section, .results-section {
+                padding: 25px;
+            }
+
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                min-width: 100%;
+            }
+
+            .months-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .birthday-item {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .action-buttons {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
+
+            .modal {
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-header {
+                padding: 20px;
+            }
+
+            .main-header h1 {
+                font-size: 1.7rem;
+            }
+
+            .input-card {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .stat-count {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Scrollbar personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(77, 163, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--azul-cielo), var(--rosa));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--azul-oscuro), #ff4081);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="main-header">
+            <div class="header-content">
+                <h1><i class="fas fa-birthday-cake"></i> Cumpleaños Jóvenes 2026</h1>
+                <p class="tagline">¡Celebremos juntos cada vida! Registra, edita y organiza todos los cumpleaños</p>
+            </div>
+        </header>
+
+        <section class="form-section">
+            <div class="form-container">
+                <div class="input-card">
+                    <div class="input-header">
+                        <i class="fas fa-user-circle"></i>
+                        <h3 id="formTitle">Agregar Nueva Persona</h3>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre"><i class="fas fa-user"></i> Nombre completo</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="nombre" placeholder="Ej: María López González" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-card">
+                    <div class="input-header">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3>Fecha de Nacimiento</h3>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha"><i class="fas fa-calendar-day"></i> Selecciona la fecha</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-calendar"></i>
+                            <input type="date" id="fecha" required>
+                        </div>
+                        <small style="display: block; margin-top: 8px; color: #666; font-size: 0.9rem;">Selecciona la fecha real de nacimiento</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons-container">
+                <button id="btnGuardar" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Agregar Persona
+                </button>
+                <button id="btnCancelarEdicion" class="btn btn-secondary" style="display: none;">
+                    <i class="fas fa-times"></i> Cancelar Edición
+                </button>
+            </div>
+        </section>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-count" id="totalPersonas">0</div>
+                <div class="stat-label">Personas Registradas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-cake-candles"></i>
+                </div>
+                <div class="stat-count" id="cumpleEsteMes">0</div>
+                <div class="stat-label">Cumpleaños este mes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-child"></i>
+                </div>
+                <div class="stat-count" id="edadPromedio">0</div>
+                <div class="stat-label">Edad promedio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-star"></i>
+                </div>
+                <div class="stat-count" id="mesMasCelebraciones">-</div>
+                <div class="stat-label">Mes con más cumpleaños</div>
+            </div>
+        </div>
+
+        <section class="results-section">
+            <h2 class="section-title">
+                <i class="fas fa-gifts"></i> Calendario de Cumpleaños
+            </h2>
+            <div id="mesesContainer" class="months-grid">
+                <!-- Los meses se generarán dinámicamente -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal de edición -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Editar Persona</h3>
+                <button class="close-modal" id="closeEditModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editNombre">Nombre completo</label>
+                    <input type="text" id="editNombre" class="form-control" placeholder="Nombre completo">
+                </div>
+                <div class="form-group">
+                    <label for="editFecha">Fecha de nacimiento</label>
+                    <input type="date" id="editFecha" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelEditBtn">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="btn btn-primary" id="saveEditBtn">
+                    <i class="fas fa-save"></i> Guardar Cambios
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 Comité de Jóvenes - ¡Cada vida es una celebración!</p>
+            <div class="footer-icons">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-gift"></i>
+                <i class="fas fa-music"></i>
+                <i class="fas fa-smile"></i>
+            </div>
+            <p><small>Sistema desarrollado para registrar y editar los cumpleaños de nuestros jóvenes</small></p>
+        </div>
+    </footer>
+
+    <script>
+        // Meses en español
+        const MESES = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        // Cargar datos desde localStorage o inicializar vacío
+        let cumpleanios = JSON.parse(localStorage.getItem('cumpleanios')) || [];
+
+        // Variables para edición
+        let editandoId = null;
+        let personaEditando = null;
+
+        // Referencias DOM
+        const nombreInput = document.getElementById('nombre');
+        const fechaInput = document.getElementById('fecha');
+        const btnGuardar = document.getElementById('btnGuardar');
+        const btnCancelarEdicion = document.getElementById('btnCancelarEdicion');
+        const formTitle = document.getElementById('formTitle');
+        const mesesContainer = document.getElementById('mesesContainer');
+        const totalPersonas = document.getElementById('totalPersonas');
+        const cumpleEsteMes = document.getElementById('cumpleEsteMes');
+        const edadPromedio = document.getElementById('edadPromedio');
+        const mesMasCelebraciones = document.getElementById('mesMasCelebraciones');
+        
+        // Modal de edición
+        const editModal = document.getElementById('editModal');
+        const editNombre = document.getElementById('editNombre');
+        const editFecha = document.getElementById('editFecha');
+        const closeEditModal = document.getElementById('closeEditModal');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const saveEditBtn = document.getElementById('saveEditBtn');
+
+        // Establecer fecha máxima (hoy) para evitar fechas futuras
+        const hoy = new Date();
+        const maxFecha = hoy.toISOString().split('T')[0];
+        fechaInput.max = maxFecha;
+        editFecha.max = maxFecha;
+        
+        // Establecer un valor por defecto
+        fechaInput.value = '2000-01-01';
+
+        // Función para calcular edad
+        function calcularEdad(fechaNac) {
+            const nac = new Date(fechaNac);
+            const hoy = new Date();
+            let edad = hoy.getFullYear() - nac.getFullYear();
+            const mes = hoy.getMonth() - nac.getMonth();
+            const dia = hoy.getDate() - nac.getDate();
+            if (mes < 0 || (mes === 0 && dia < 0)) edad--;
+            return edad;
+        }
+
+        // Función para obtener la primera letra del nombre para el avatar
+        function obtenerInicial(nombre) {
+            return nombre.charAt(0).toUpperCase();
+        }
+
+        // Función para formatear fecha a formato español
+        function formatearFecha(fechaStr) {
+            const fecha = new Date(fechaStr);
+            return fecha.toLocaleDateString('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Actualizar estadísticas
+        function actualizarEstadisticas() {
+            totalPersonas.textContent = cumpleanios.length;
+            
+            // Cumpleaños este mes
+            const mesActual = hoy.getMonth() + 1;
+            const cumpleMesActual = cumpleanios.filter(p => {
+                return new Date(p.fecha).getMonth() + 1 === mesActual;
+            }).length;
+            cumpleEsteMes.textContent = cumpleMesActual;
+            
+            // Edad promedio
+            if (cumpleanios.length > 0) {
+                const sumaEdades = cumpleanios.reduce((sum, p) => sum + calcularEdad(p.fecha), 0);
+                const promedio = Math.round(sumaEdades / cumpleanios.length);
+                edadPromedio.textContent = promedio;
+            } else {
+                edadPromedio.textContent = "0";
+            }
+            
+            // Mes con más celebraciones
+            if (cumpleanios.length > 0) {
+                const conteoMeses = new Array(12).fill(0);
+                cumpleanios.forEach(p => {
+                    const mes = new Date(p.fecha).getMonth();
+                    conteoMeses[mes]++;
+                });
+                
+                const maxIndex = conteoMeses.indexOf(Math.max(...conteoMeses));
+                mesMasCelebraciones.textContent = MESES[maxIndex];
+            } else {
+                mesMasCelebraciones.textContent = "-";
+            }
+        }
+
+        // Guardar en localStorage
+        function guardarDatos() {
+            localStorage.setItem('cumpleanios', JSON.stringify(cumpleanios));
+            renderizar();
+            actualizarEstadisticas();
+        }
+
+        // Función para agregar o actualizar persona
+        function guardarPersona() {
+            const nombre = nombreInput.value.trim();
+            const fecha = fechaInput.value;
+
+            if (!nombre) {
+                alert("⚠️ Por favor, ingresa un nombre.");
+                nombreInput.focus();
+                return;
+            }
+            if (!fecha) {
+                alert("⚠️ Por favor, selecciona una fecha de nacimiento.");
+                fechaInput.focus();
+                return;
+            }
+
+            // Validar que la fecha no sea futura
+            const fechaNac = new Date(fecha);
+            if (fechaNac > new Date()) {
+                alert("⚠️ La fecha no puede ser futura.");
+                return;
+            }
+
+            if (editandoId) {
+                // Actualizar persona existente
+                const index = cumpleanios.findIndex(p => p.id === editandoId);
+                if (index !== -1) {
+                    cumpleanios[index] = {
+                        ...cumpleanios[index],
+                        nombre,
+                        fecha
+                    };
+                    alert("✅ Persona actualizada correctamente.");
+                }
+                cancelarEdicion();
+            } else {
+                // Agregar nueva persona
+                const nuevaPersona = {
+                    id: Date.now(), // ID único basado en timestamp
+                    nombre,
+                    fecha
+                };
+
+                cumpleanios.push(nuevaPersona);
+                alert("✅ Persona agregada correctamente.");
+            }
+
+            guardarDatos();
+
+            // Efecto visual de confirmación
+            btnGuardar.innerHTML = '<i class="fas fa-check"></i> ¡Guardado!';
+            setTimeout(() => {
+                btnGuardar.innerHTML = editandoId ? 
+                    '<i class="fas fa-save"></i> Actualizar Persona' : 
+                    '<i class="fas fa-plus-circle"></i> Agregar Persona';
+            }, 1000);
+
+            // Limpiar campos (solo nombre, mantener fecha)
+            nombreInput.value = '';
+            nombreInput.focus();
+            fechaInput.value = '2000-01-01';
+        }
+
+        // Función para iniciar edición desde el formulario principal
+        function iniciarEdicion(id) {
+            const persona = cumpleanios.find(p => p.id === id);
+            if (!persona) return;
+
+            editandoId = id;
+            personaEditando = persona;
+            
+            // Llenar formulario con datos de la persona
+            nombreInput.value = persona.nombre;
+            fechaInput.value = persona.fecha;
+            
+            // Cambiar texto del botón y título
+            btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Persona';
+            formTitle.textContent = 'Editar Persona';
+            btnCancelarEdicion.style.display = 'flex';
+            
+            // Desplazar hacia el formulario
+            nombreInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Función para cancelar edición
+        function cancelarEdicion() {
+            editandoId = null;
+            personaEditando = null;
+            
+            // Restaurar formulario
+            nombreInput.value = '';
+            fechaInput.value = '2000-01-01';
+            btnGuardar.innerHTML = '<i class="fas fa-plus-circle"></i> Agregar Persona';
+            formTitle.textContent = 'Agregar Nueva Persona';
+            btnCancelarEdicion.style.display = 'none';
+            nombreInput.focus();
+        }
+
+        // Función para eliminar persona
+        function eliminarPersona(id) {
+            const persona = cumpleanios.find(p => p.id === id);
+            if (!persona) return;
+
+            if (confirm(`¿Estás seguro de eliminar a ${persona.nombre}?`)) {
+                cumpleanios = cumpleanios.filter(p => p.id !== id);
+                guardarDatos();
+                alert(`✅ ${persona.nombre} ha sido eliminado.`);
+                
+                // Si estábamos editando a esta persona, cancelar edición
+                if (editandoId === id) {
+                    cancelarEdicion();
+                }
+            }
+        }
+
+        // Función para abrir modal de edición
+        function abrirModalEdicion(id) {
+            const persona = cumpleanios.find(p => p.id === id);
+            if (!persona) return;
+
+            personaEditando = persona;
+            
+            // Llenar campos del modal
+            editNombre.value = persona.nombre;
+            editFecha.value = persona.fecha;
+            
+            // Mostrar modal
+            editModal.classList.add('active');
+        }
+
+        // Función para guardar cambios desde el modal
+        function guardarCambiosModal() {
+            const nombre = editNombre.value.trim();
+            const fecha = editFecha.value;
+
+            if (!nombre) {
+                alert("⚠️ Por favor, ingresa un nombre.");
+                editNombre.focus();
+                return;
+            }
+            if (!fecha) {
+                alert("⚠️ Por favor, selecciona una fecha de nacimiento.");
+                editFecha.focus();
+                return;
+            }
+
+            // Validar que la fecha no sea futura
+            const fechaNac = new Date(fecha);
+            if (fechaNac > new Date()) {
+                alert("⚠️ La fecha no puede ser futura.");
+                return;
+            }
+
+            // Actualizar persona
+            const index = cumpleanios.findIndex(p => p.id === personaEditando.id);
+            if (index !== -1) {
+                cumpleanios[index] = {
+                    ...cumpleanios[index],
+                    nombre,
+                    fecha
+                };
+                guardarDatos();
+                alert("✅ Persona actualizada correctamente.");
+                cerrarModalEdicion();
+            }
+        }
+
+        // Función para cerrar modal de edición
+        function cerrarModalEdicion() {
+            editModal.classList.remove('active');
+            personaEditando = null;
+        }
+
+        // Event Listeners
+        btnGuardar.addEventListener('click', guardarPersona);
+        btnCancelarEdicion.addEventListener('click', cancelarEdicion);
+        
+        // Modal event listeners
+        closeEditModal.addEventListener('click', cerrarModalEdicion);
+        cancelEditBtn.addEventListener('click', cerrarModalEdicion);
+        saveEditBtn.addEventListener('click', guardarCambiosModal);
+        
+        // Cerrar modal al hacer clic fuera
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                cerrarModalEdicion();
+            }
+        });
+
+        // Permitir agregar con Enter en el campo de nombre
+        nombreInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                guardarPersona();
+            }
+        });
+
+        // Renderizar por meses
+        function renderizar() {
+            // Limpiar contenedor
+            mesesContainer.innerHTML = '';
+
+            // Agrupar por mes (1-12)
+            const grupos = {};
+            for (let i = 1; i <= 12; i++) {
+                grupos[i] = [];
+            }
+
+            cumpleanios.forEach(persona => {
+                const mes = new Date(persona.fecha).getMonth() + 1;
+                grupos[mes].push(persona);
+            });
+
+            // Ordenar cada grupo por día (y luego por nombre)
+            for (let mes in grupos) {
+                grupos[mes].sort((a, b) => {
+                    const fechaA = new Date(a.fecha);
+                    const fechaB = new Date(b.fecha);
+                    const diffDias = fechaA.getDate() - fechaB.getDate();
+                    if (diffDias !== 0) return diffDias;
+                    return a.nombre.localeCompare(b.nombre);
+                });
+            }
+
+            // Renderizar cada mes que tenga datos
+            let hayDatos = false;
+            
+            // Mostrar meses en orden
+            for (let mesNum = 1; mesNum <= 12; mesNum++) {
+                const personas = grupos[mesNum];
+                
+                const monthCard = document.createElement('div');
+                monthCard.className = 'month-card';
+
+                const header = document.createElement('div');
+                header.className = 'month-header';
+                header.innerHTML = `
+                    <span class="month-name">${MESES[mesNum - 1]}</span>
+                    <span class="month-count">${personas.length} persona${personas.length !== 1 ? 's' : ''}</span>
+                `;
+
+                const list = document.createElement('ul');
+                list.className = 'birthdays-list';
+
+                if (personas.length > 0) {
+                    hayDatos = true;
+                    
+                    personas.forEach(p => {
+                        const item = document.createElement('li');
+                        item.className = 'birthday-item';
+                        const edad = calcularEdad(p.fecha);
+                        const fechaFormateada = formatearFecha(p.fecha);
+                        const inicial = obtenerInicial(p.nombre);
+                        
+                        item.innerHTML = `
+                            <div class="person-info">
+                                <div class="person-avatar">${inicial}</div>
+                                <div class="person-details">
+                                    <div class="person-name">${p.nombre}</div>
+                                    <div class="birth-date">${fechaFormateada}</div>
+                                </div>
+                            </div>
+                            <div class="age-badge">${edad} año${edad !== 1 ? 's' : ''}</div>
+                            <div class="action-buttons">
+                                <button class="action-btn edit-btn" title="Editar" data-id="${p.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="action-btn delete-btn" title="Eliminar" data-id="${p.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+                        list.appendChild(item);
+                    });
+                } else {
+                    // Mostrar mes vacío
+                    const emptyItem = document.createElement('li');
+                    emptyItem.className = 'birthday-item';
+                    emptyItem.innerHTML = `
+                        <div style="text-align: center; width: 100%; padding: 20px; color: #999; font-style: italic;">
+                            <i class="fas fa-calendar-plus"></i><br>
+                            No hay cumpleaños registrados
+                        </div>
+                    `;
+                    list.appendChild(emptyItem);
+                }
+
+                monthCard.appendChild(header);
+                monthCard.appendChild(list);
+                mesesContainer.appendChild(monthCard);
+            }
+
+            // Mensaje si no hay datos en absoluto
+            if (!hayDatos) {
+                mesesContainer.innerHTML = `
+                    <div class="empty-message">
+                        <i class="fas fa-birthday-cake"></i>
+                        <h3>🎉 ¡Comienza a registrar cumpleaños!</h3>
+                        <p>Aún no hay cumpleaños registrados. Agrega el primero usando el formulario superior.</p>
+                    </div>
+                `;
+            } else {
+                // Agregar event listeners a los botones de acción
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.getAttribute('data-id'));
+                        abrirModalEdicion(id);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = parseInt(btn.getAttribute('data-id'));
+                        eliminarPersona(id);
+                    });
+                });
+            }
+        }
+
+        // Inicializar
+        renderizar();
+        actualizarEstadisticas();
+    </script>
+</body>
+</html>
