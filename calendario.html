@@ -1552,68 +1552,7 @@
         // Exportar a PDF (simulación)
         function exportToPDF() {
             alert('Funcionalidad de exportación a PDF en desarrollo. Por ahora, puede tomar una captura de pantalla.');
-            // En una implementación real, aquí se usaría una librería como jsPDF
         }
-
-        // Datos de ejemplo para probar la aplicación
-        function loadSampleData() {
-            if (activities.length === 0) {
-                const sampleActivities = [
-                    {
-                        id: generateId(),
-                        title: 'Reunión de planificación anual',
-                        date: new Date(new Date().getFullYear(), new Date().getMonth(), 15).toISOString().split('T')[0],
-                        time: '18:00',
-                        location: 'Sala de reuniones',
-                        responsible: 'María García',
-                        description: 'Reunión para planificar las actividades del año',
-                        type: 'reunion',
-                        typeName: 'Reunión',
-                        color: '#4A6FA5',
-                        priority: 'high',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: generateId(),
-                        title: 'Evento de integración',
-                        date: new Date(new Date().getFullYear(), new Date().getMonth(), 20).toISOString().split('T')[0],
-                        time: '16:00',
-                        location: 'Parque Central',
-                        responsible: 'Carlos López',
-                        description: 'Evento social para integrar a los nuevos miembros',
-                        type: 'social',
-                        typeName: 'Social',
-                        color: '#E55934',
-                        priority: 'medium',
-                        createdAt: new Date().toISOString()
-                    },
-                    {
-                        id: generateId(),
-                        title: 'Taller de liderazgo',
-                        date: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 5).toISOString().split('T')[0],
-                        time: '10:00',
-                        location: 'Centro de capacitación',
-                        responsible: 'Ana Rodríguez',
-                        description: 'Taller para desarrollar habilidades de liderazgo',
-                        type: 'capacitacion',
-                        typeName: 'Capacitación',
-                        color: '#F4B942',
-                        priority: 'high',
-                        createdAt: new Date().toISOString()
-                    }
-                ];
-                
-                activities = sampleActivities;
-                saveToLocalStorage();
-                renderCalendar();
-                renderActivityList();
-                updateStats();
-                populateFilters();
-            }
-        }
-
-        // Cargar datos de ejemplo al iniciar (solo si no hay datos)
-        setTimeout(loadSampleData, 500);
     </script>
 </body>
 </html>
