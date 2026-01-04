@@ -18,6 +18,7 @@
             --naranja: #ff9800;
             --morado: #9c27b0;
             --amarillo: #ffeb3b;
+            --verde-finanzas: #2E7D32; /* Color adicional para contabilidad */
         }
 
         * {
@@ -361,6 +362,16 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
+        .btn-contabilidad-finanzas {
+            background: linear-gradient(135deg, var(--verde-finanzas), #4CAF50);
+            color: var(--blanco);
+        }
+
+        .btn-contabilidad-finanzas:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(46, 125, 50, 0.5);
+        }
+
         .btn-cumpleanos {
             background: linear-gradient(135deg, var(--naranja), #e65100);
             color: var(--blanco);
@@ -457,7 +468,8 @@
         .buttons .btn:nth-child(1) { animation-delay: 1.2s; }
         .buttons .btn:nth-child(2) { animation-delay: 1.4s; }
         .buttons .btn:nth-child(3) { animation-delay: 1.6s; }
-        footer { animation-delay: 1.8s; }
+        .buttons .btn:nth-child(4) { animation-delay: 1.8s; } /* Nuevo botón */
+        footer { animation-delay: 2s; }
 
         /* Responsive */
         @media (max-width: 1024px) {
@@ -616,6 +628,11 @@
 
                     <a href="contabilidad.html" class="btn btn-contabilidad">
                         <i class="fas fa-chart-line"></i>
+                        <span>Campamento</span>
+                    </a>
+
+                    <a href="Contabilidadyfina.html" class="btn btn-contabilidad-finanzas">
+                        <i class="fas fa-calculator"></i>
                         <span>Contabilidad y Finanzas</span>
                     </a>
 
@@ -635,7 +652,7 @@
         </div>
         
         <footer>
-            © 2026 Comité de Jóvenes | Confiando siempre en Dios | Diseñado con ❤️ para la comunidad
+            © 2026 Comité de Jóvenes | Confiando siempre en Dios |
         </footer>
     </div>
 
@@ -656,7 +673,7 @@
                 particle.style.height = `${size}px`;
                 
                 // Color aleatorio
-                const colors = ['#4da3ff', '#ff9800', '#9c27b0', '#4CAF50'];
+                const colors = ['#4da3ff', '#ff9800', '#9c27b0', '#4CAF50', '#2E7D32'];
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 particle.style.background = color;
                 
