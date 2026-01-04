@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cumpleaños Jóvenes - 2026</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase SDK compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    
     <style>
         :root {
             --azul-cielo: #4da3ff;
@@ -920,15 +925,31 @@
         </div>
     </footer>
 
+    <!-- Firebase Configuration -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2ks3PceJQafDNnmFXYFzw34DNzz6p3Tc",
+            authDomain: "base-cumpleanos.firebaseapp.com",
+            databaseURL: "https://base-cumpleanos-default-rtdb.firebaseio.com",
+            projectId: "base-cumpleanos",
+            storageBucket: "base-cumpleanos.firebasestorage.app",
+            messagingSenderId: "564323590998",
+            appId: "1:564323590998:web:88e68d2c3ca575bb63acf7",
+            measurementId: "G-DZG8WN6SWT"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
     <script>
         // Meses en español
         const MESES = [
             "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
         ];
-
-        // Cargar datos desde localStorage o inicializar vacío
-        let cumpleanios = JSON.parse(localStorage.getItem('cumpleanios')) || [];
 
         // Variables para edición
         let editandoId = null;
@@ -990,7 +1011,7 @@
         }
 
         // Actualizar estadísticas
-        function actualizarEstadisticas() {
+        function actualizarEstadisticas(cumpleanios) {
             totalPersonas.textContent = cumpleanios.length;
             
             // Cumpleaños este mes
@@ -1024,13 +1045,6 @@
             }
         }
 
-        // Guardar en localStorage
-        function guardarDatos() {
-            localStorage.setItem('cumpleanios', JSON.stringify(cumpleanios));
-            renderizar();
-            actualizarEstadisticas();
-        }
-
         // Función para agregar o actualizar persona
         function guardarPersona() {
             const nombre = nombreInput.value.trim();
@@ -1055,30 +1069,38 @@
             }
 
             if (editandoId) {
-                // Actualizar persona existente
-                const index = cumpleanios.findIndex(p => p.id === editandoId);
-                if (index !== -1) {
-                    cumpleanios[index] = {
-                        ...cumpleanios[index],
-                        nombre,
-                        fecha
-                    };
-                    alert("✅ Persona actualizada correctamente.");
-                }
-                cancelarEdicion();
+                // Actualizar persona existente en Firebase
+                const personaActualizada = {
+                    nombre,
+                    fecha,
+                    id: editandoId
+                };
+                
+                database.ref('cumpleanios/' + editandoId).update(personaActualizada)
+                    .then(() => {
+                        alert("✅ Persona actualizada correctamente.");
+                        cancelarEdicion();
+                    })
+                    .catch(error => {
+                        alert("❌ Error al actualizar: " + error.message);
+                    });
             } else {
-                // Agregar nueva persona
+                // Agregar nueva persona a Firebase
+                const nuevaPersonaRef = database.ref('cumpleanios').push();
                 const nuevaPersona = {
-                    id: Date.now(), // ID único basado en timestamp
+                    id: nuevaPersonaRef.key,
                     nombre,
                     fecha
                 };
-
-                cumpleanios.push(nuevaPersona);
-                alert("✅ Persona agregada correctamente.");
+                
+                nuevaPersonaRef.set(nuevaPersona)
+                    .then(() => {
+                        alert("✅ Persona agregada correctamente.");
+                    })
+                    .catch(error => {
+                        alert("❌ Error al agregar: " + error.message);
+                    });
             }
-
-            guardarDatos();
 
             // Efecto visual de confirmación
             btnGuardar.innerHTML = '<i class="fas fa-check"></i> ¡Guardado!';
@@ -1088,7 +1110,7 @@
                     '<i class="fas fa-plus-circle"></i> Agregar Persona';
             }, 1000);
 
-            // Limpiar campos (solo nombre, mantener fecha)
+            // Limpiar campos
             nombreInput.value = '';
             nombreInput.focus();
             fechaInput.value = '2000-01-01';
@@ -1096,24 +1118,29 @@
 
         // Función para iniciar edición desde el formulario principal
         function iniciarEdicion(id) {
-            const persona = cumpleanios.find(p => p.id === id);
-            if (!persona) return;
-
             editandoId = id;
-            personaEditando = persona;
             
-            // Llenar formulario con datos de la persona
-            nombreInput.value = persona.nombre;
-            fechaInput.value = persona.fecha;
-            
-            // Cambiar texto del botón y título
-            btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Persona';
-            formTitle.textContent = 'Editar Persona';
-            btnCancelarEdicion.style.display = 'flex';
-            
-            // Desplazar hacia el formulario
-            nombreInput.focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Obtener datos de Firebase
+            database.ref('cumpleanios/' + id).once('value')
+                .then(snapshot => {
+                    const persona = snapshot.val();
+                    if (!persona) return;
+
+                    personaEditando = persona;
+                    
+                    // Llenar formulario con datos de la persona
+                    nombreInput.value = persona.nombre;
+                    fechaInput.value = persona.fecha;
+                    
+                    // Cambiar texto del botón y título
+                    btnGuardar.innerHTML = '<i class="fas fa-save"></i> Actualizar Persona';
+                    formTitle.textContent = 'Editar Persona';
+                    btnCancelarEdicion.style.display = 'flex';
+                    
+                    // Desplazar hacia el formulario
+                    nombreInput.focus();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
         }
 
         // Función para cancelar edición
@@ -1132,34 +1159,38 @@
 
         // Función para eliminar persona
         function eliminarPersona(id) {
-            const persona = cumpleanios.find(p => p.id === id);
-            if (!persona) return;
+            const confirmacion = confirm("¿Estás seguro de eliminar esta persona?");
+            if (!confirmacion) return;
 
-            if (confirm(`¿Estás seguro de eliminar a ${persona.nombre}?`)) {
-                cumpleanios = cumpleanios.filter(p => p.id !== id);
-                guardarDatos();
-                alert(`✅ ${persona.nombre} ha sido eliminado.`);
-                
-                // Si estábamos editando a esta persona, cancelar edición
-                if (editandoId === id) {
-                    cancelarEdicion();
-                }
-            }
+            database.ref('cumpleanios/' + id).remove()
+                .then(() => {
+                    alert("✅ Persona eliminada correctamente.");
+                    // Si estábamos editando a esta persona, cancelar edición
+                    if (editandoId === id) {
+                        cancelarEdicion();
+                    }
+                })
+                .catch(error => {
+                    alert("❌ Error al eliminar: " + error.message);
+                });
         }
 
         // Función para abrir modal de edición
         function abrirModalEdicion(id) {
-            const persona = cumpleanios.find(p => p.id === id);
-            if (!persona) return;
+            database.ref('cumpleanios/' + id).once('value')
+                .then(snapshot => {
+                    const persona = snapshot.val();
+                    if (!persona) return;
 
-            personaEditando = persona;
-            
-            // Llenar campos del modal
-            editNombre.value = persona.nombre;
-            editFecha.value = persona.fecha;
-            
-            // Mostrar modal
-            editModal.classList.add('active');
+                    personaEditando = persona;
+                    
+                    // Llenar campos del modal
+                    editNombre.value = persona.nombre;
+                    editFecha.value = persona.fecha;
+                    
+                    // Mostrar modal
+                    editModal.classList.add('active');
+                });
         }
 
         // Función para guardar cambios desde el modal
@@ -1185,18 +1216,21 @@
                 return;
             }
 
-            // Actualizar persona
-            const index = cumpleanios.findIndex(p => p.id === personaEditando.id);
-            if (index !== -1) {
-                cumpleanios[index] = {
-                    ...cumpleanios[index],
-                    nombre,
-                    fecha
-                };
-                guardarDatos();
-                alert("✅ Persona actualizada correctamente.");
-                cerrarModalEdicion();
-            }
+            // Actualizar persona en Firebase
+            const personaActualizada = {
+                nombre,
+                fecha,
+                id: personaEditando.id
+            };
+
+            database.ref('cumpleanios/' + personaEditando.id).update(personaActualizada)
+                .then(() => {
+                    alert("✅ Persona actualizada correctamente.");
+                    cerrarModalEdicion();
+                })
+                .catch(error => {
+                    alert("❌ Error al actualizar: " + error.message);
+                });
         }
 
         // Función para cerrar modal de edición
@@ -1229,7 +1263,7 @@
         });
 
         // Renderizar por meses
-        function renderizar() {
+        function renderizar(cumpleanios) {
             // Limpiar contenedor
             mesesContainer.innerHTML = '';
 
@@ -1334,27 +1368,43 @@
                 `;
             } else {
                 // Agregar event listeners a los botones de acción
-                document.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const id = parseInt(btn.getAttribute('data-id'));
-                        abrirModalEdicion(id);
+                setTimeout(() => {
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const id = btn.getAttribute('data-id');
+                            abrirModalEdicion(id);
+                        });
                     });
-                });
-                
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const id = parseInt(btn.getAttribute('data-id'));
-                        eliminarPersona(id);
+                    
+                    document.querySelectorAll('.delete-btn').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const id = btn.getAttribute('data-id');
+                            eliminarPersona(id);
+                        });
                     });
-                });
+                }, 100);
             }
         }
 
+        // ESCUCHAR CAMBIOS EN TIEMPO REAL DESDE FIREBASE
+        database.ref("cumpleanios").on("value", snapshot => {
+            const data = snapshot.val();
+            let cumpleanios = [];
+            
+            if (data) {
+                // Convertir objeto de Firebase a array
+                cumpleanios = Object.values(data);
+            }
+            
+            renderizar(cumpleanios);
+            actualizarEstadisticas(cumpleanios);
+        });
+
         // Inicializar
-        renderizar();
-        actualizarEstadisticas();
+        renderizar([]);
+        actualizarEstadisticas([]);
     </script>
 </body>
 </html>
