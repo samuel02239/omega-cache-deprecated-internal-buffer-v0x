@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campamento 2026 - Sistema de Abonos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
     <style>
         :root {
             --primary-color: #2E8B57;
@@ -792,8 +795,8 @@
                             <input type="number" id="totalAmount" class="form-control" min="0" value="270000" required>
                         </div>
                         <div class="form-group">
-                            <label for="paymentDate">Fecha de Pago</label>
-                            <input type="date" id="paymentDate" class="form-control">
+                            <label for="paymentDate">Fecha de Pago *</label>
+                            <input type="date" id="paymentDate" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-buttons">
@@ -945,18 +948,57 @@
         </div>
     </div>
 
+    <!-- Firebase Configuration -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBSSpvqqpfulrPg9mWV7pyxE201wSYbSNc",
+            authDomain: "base-campamento.firebaseapp.com",
+            databaseURL: "https://base-campamento-default-rtdb.firebaseio.com",
+            projectId: "base-campamento",
+            storageBucket: "base-campamento.firebasestorage.app",
+            messagingSenderId: "464178200328",
+            appId: "1:464178200328:web:28b95d32f9e9b9b76736bd",
+            measurementId: "G-9LY1F568E1"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+
     <script>
         // Variables globales
-        let payments = JSON.parse(localStorage.getItem('campamento2026Payments')) || [];
+        let payments = [];
         let editPaymentId = null;
         let filteredPayments = [];
+        let isInitialLoad = true;
 
         // Inicializar la aplicación
         document.addEventListener('DOMContentLoaded', function() {
             initApp();
-            loadPaymentsTable();
-            updateStats();
-            updateAccountingTable();
+            
+            // ESCUCHAR CAMBIOS EN TIEMPO REAL DE FIREBASE
+            database.ref("payments").on("value", snapshot => {
+                const data = snapshot.val();
+                payments = data ? Object.values(data) : [];
+                
+                // Actualizar todas las interfaces
+                loadPaymentsTable();
+                updateStats();
+                loadLocationsInFilters();
+                updateAccountingTable();
+                
+                // Mostrar notificación solo si no es la carga inicial
+                if (!isInitialLoad) {
+                    showNotification("Datos actualizados en tiempo real", "info");
+                }
+                isInitialLoad = false;
+            });
+            
+            // Establecer fecha de hoy por defecto en el formulario
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentDate').value = today;
         });
 
         // Inicializar eventos
@@ -1006,10 +1048,6 @@
             // Exportar
             document.getElementById('exportBtn').addEventListener('click', exportData);
             
-            // Establecer fecha de hoy por defecto en el formulario
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('paymentDate').value = today;
-            
             // Cargar lugares en filtros
             loadLocationsInFilters();
             
@@ -1031,7 +1069,7 @@
             }
         }
 
-        // Guardar pago - CORREGIDA
+        // Guardar pago en Firebase
         function savePayment(e) {
             e.preventDefault();
             
@@ -1049,18 +1087,18 @@
             if (location === 'otro') {
                 location = document.getElementById('otherLocation').value.trim();
                 if (!location) {
-                    alert('Por favor especifique el lugar');
+                    showNotification('Por favor especifique el lugar', 'warning');
                     return;
                 }
             }
             
-            if (!fullName || !phone || !idNumber || !gender || !location || !paymentMethod) {
-                alert('Por favor complete todos los campos obligatorios (*)');
+            if (!fullName || !phone || !idNumber || !gender || !location || !paymentMethod || !paymentDate) {
+                showNotification('Por favor complete todos los campos obligatorios (*)', 'warning');
                 return;
             }
             
             if (amount > totalAmount) {
-                alert('El monto abonado no puede ser mayor al monto total');
+                showNotification('El monto abonado no puede ser mayor al monto total', 'warning');
                 return;
             }
             
@@ -1075,8 +1113,8 @@
             }
             
             // Verificar si ya existe una persona con la misma cédula (solo para nuevos registros)
-            if (editPaymentId === null && payments.some(p => p.idNumber === idNumber)) {
-                alert('Ya existe una persona registrada con esta cédula');
+            if (editPaymentId === null && payments.some(p => p.idNumber === idNumber && p.id !== editPaymentId)) {
+                showNotification('Ya existe una persona registrada con esta cédula', 'warning');
                 return;
             }
             
@@ -1092,48 +1130,46 @@
                 amount,
                 totalAmount,
                 status,
-                paymentDate: paymentDate || new Date().toISOString().split('T')[0],
-                registeredAt: new Date().toISOString()
+                paymentDate: paymentDate,
+                registeredAt: new Date().toISOString(),
+                lastModified: new Date().toISOString(),
+                modifiedBy: getCurrentUser() || 'Usuario'
             };
             
-            if (editPaymentId) {
-                // Actualizar pago existente
-                const index = payments.findIndex(p => p.id === editPaymentId);
-                if (index !== -1) {
-                    payments[index] = payment;
-                }
-            } else {
-                // Agregar nuevo pago
-                payments.push(payment);
-            }
-            
-            // Guardar en LocalStorage
-            saveToLocalStorage();
-            
-            // Actualizar TODAS las interfaces
-            loadPaymentsTable();
-            updateStats();
-            loadLocationsInFilters();
-            updateAccountingTable();
+            // Guardar en Firebase
+            savePaymentToFirebase(payment);
             
             // Limpiar formulario
             clearForm();
             
             // Mostrar mensaje de confirmación
-            alert(editPaymentId ? 'Registro actualizado correctamente' : 'Registro guardado correctamente');
+            showNotification(editPaymentId ? 'Registro actualizado correctamente' : 'Registro guardado correctamente', 'success');
             editPaymentId = null;
+        }
+
+        // Función para guardar en Firebase
+        function savePaymentToFirebase(payment) {
+            database.ref("payments/" + payment.id).set(payment)
+                .then(() => {
+                    console.log("Datos guardados en Firebase correctamente");
+                })
+                .catch(error => {
+                    console.error("Error al guardar en Firebase:", error);
+                    showNotification('Error al guardar en la base de datos', 'error');
+                });
         }
 
         // Limpiar formulario
         function clearForm() {
             document.getElementById('paymentForm').reset();
             document.getElementById('otherLocationGroup').style.display = 'none';
-            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentDate').value = today;
             document.getElementById('totalAmount').value = 270000; // Valor por defecto
             editPaymentId = null;
         }
 
-        // Cargar tabla de pagos - CORREGIDA
+        // Cargar tabla de pagos
         function loadPaymentsTable() {
             const tbody = document.getElementById('inscritosTable');
             
@@ -1227,7 +1263,7 @@
             });
         }
 
-        // Cambiar estado de abono - MEJORADA
+        // Cambiar estado de abono
         function changePaymentStatus(paymentId, statusElement) {
             const payment = payments.find(p => p.id === paymentId);
             if (!payment) return;
@@ -1257,15 +1293,11 @@
             select.addEventListener('change', function() {
                 const newStatus = this.value;
                 payment.status = newStatus;
+                payment.lastModified = new Date().toISOString();
+                payment.modifiedBy = getCurrentUser() || 'Usuario';
                 
-                // Guardar cambios
-                saveToLocalStorage();
-                updateStats();
-                updateAccountingTable();
-                
-                // Actualizar la fila completa
-                loadPaymentsTable();
-                filterInscritos();
+                // Guardar cambios en Firebase
+                savePaymentToFirebase(payment);
             });
             
             // Si se hace clic fuera, cancelar
@@ -1300,7 +1332,7 @@
             }
         }
 
-        // Editar pago - CORREGIDA
+        // Editar pago
         function editPayment(paymentId) {
             const payment = payments.find(p => p.id === paymentId);
             if (!payment) return;
@@ -1338,26 +1370,25 @@
             document.getElementById('fullName').focus();
             
             // Mostrar mensaje
-            alert('Modifica los datos y haz clic en "Guardar Registro" para actualizar');
+            showNotification('Modifica los datos y haz clic en "Guardar Registro" para actualizar', 'info');
         }
 
-        // Eliminar pago - CORREGIDA
+        // Eliminar pago
         function deletePayment(paymentId) {
             if (!confirm('¿Está seguro de eliminar este registro de abono?')) return;
             
-            payments = payments.filter(p => p.id !== paymentId);
-            saveToLocalStorage();
-            
-            // Actualizar TODAS las interfaces
-            loadPaymentsTable();
-            updateStats();
-            loadLocationsInFilters();
-            updateAccountingTable();
-            
-            alert('Registro eliminado correctamente');
+            // Eliminar de Firebase
+            database.ref("payments/" + paymentId).remove()
+                .then(() => {
+                    showNotification('Registro eliminado correctamente', 'success');
+                })
+                .catch(error => {
+                    console.error("Error al eliminar de Firebase:", error);
+                    showNotification('Error al eliminar el registro', 'error');
+                });
         }
 
-        // Filtrar inscritos - CORREGIDA
+        // Filtrar inscritos
         function filterInscritos() {
             const searchTerm = document.getElementById('searchInscritos').value.toLowerCase();
             const locationFilter = document.getElementById('filterLocation').value;
@@ -1513,16 +1544,12 @@
             });
         }
 
-        // Actualizar estadísticas - CORREGIDA
+        // Actualizar estadísticas
         function updateStats() {
             const totalCollected = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
             const totalPeople = payments.length;
             const avgPayment = totalPeople > 0 ? totalCollected / totalPeople : 0;
             const uniqueLocations = [...new Set(payments.map(p => p.location))].length;
-            
-            // Contar por género
-            const males = payments.filter(p => p.gender === 'male').length;
-            const females = payments.filter(p => p.gender === 'female').length;
             
             document.getElementById('totalCollected').textContent = `$${formatCurrency(totalCollected)}`;
             document.getElementById('totalPeople').textContent = totalPeople;
@@ -1530,7 +1557,7 @@
             document.getElementById('totalLocations').textContent = uniqueLocations;
         }
 
-        // Actualizar tabla de contabilidad - CORREGIDA
+        // Actualizar tabla de contabilidad
         function updateAccountingTable() {
             const locationFilter = document.getElementById('accountingLocation').value;
             const methodFilter = document.getElementById('accountingMethod').value;
@@ -1548,7 +1575,7 @@
             }
             
             if (dateFilter) {
-                filtered = filtered.filter(p => p.paymentDate.startsWith(dateFilter));
+                filtered = filtered.filter(p => p.paymentDate && p.paymentDate.startsWith(dateFilter));
             }
             
             // Calcular total por método de pago
@@ -1610,10 +1637,6 @@
             return Date.now().toString(36) + Math.random().toString(36).substr(2);
         }
 
-        function saveToLocalStorage() {
-            localStorage.setItem('campamento2026Payments', JSON.stringify(payments));
-        }
-
         function getPaymentMethodIcon(method) {
             switch(method) {
                 case 'Nequi': return 'fa-mobile-alt';
@@ -1626,6 +1649,7 @@
 
         function formatDate(dateString) {
             try {
+                if (!dateString) return 'Sin fecha';
                 const date = new Date(dateString);
                 return date.toLocaleDateString('es-ES', {
                     day: '2-digit',
@@ -1644,9 +1668,85 @@
             });
         }
 
+        // Obtener usuario actual (simplificado)
+        function getCurrentUser() {
+            // En una implementación real, esto vendría de Firebase Auth
+            // Por ahora, usamos una cookie o localStorage
+            let user = localStorage.getItem('campamento_user');
+            if (!user) {
+                user = prompt('Por favor, ingresa tu nombre para identificar tus cambios:', 'Usuario');
+                if (user) {
+                    localStorage.setItem('campamento_user', user);
+                } else {
+                    user = 'Usuario';
+                }
+            }
+            return user;
+        }
+
+        // Mostrar notificación
+        function showNotification(message, type = 'info') {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: var(--border-radius);
+                background-color: ${type === 'success' ? 'var(--success-color)' : 
+                                type === 'warning' ? 'var(--warning-color)' : 
+                                type === 'error' ? 'var(--danger-color)' : 
+                                'var(--info-color)'};
+                color: white;
+                font-weight: 600;
+                z-index: 1000;
+                box-shadow: var(--shadow);
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Agregar estilos de animación si no existen
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
         // Alternar tema claro/oscuro
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
+            localStorage.setItem('campamento_theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        }
+
+        // Cargar tema guardado
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('campamento_theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
         }
 
         // Exportar datos
@@ -1659,7 +1759,8 @@
                     totalCollected: payments.reduce((sum, p) => sum + (p.amount || 0), 0),
                     totalPeople: payments.length,
                     males: payments.filter(p => p.gender === 'male').length,
-                    females: payments.filter(p => p.gender === 'female').length
+                    females: payments.filter(p => p.gender === 'female').length,
+                    uniqueLocations: [...new Set(payments.map(p => p.location))].length
                 }
             };
             
@@ -1675,11 +1776,14 @@
             linkElement.setAttribute('download', exportFileDefaultName);
             linkElement.click();
             
-            alert('Datos exportados correctamente como JSON');
+            showNotification('Datos exportados correctamente como JSON', 'success');
         }
 
         // Ajustar altura de la tabla cuando cambia el tamaño de la ventana
         window.addEventListener('resize', adjustTableHeight);
+        
+        // Cargar tema al iniciar
+        loadTheme();
     </script>
 </body>
 </html>
