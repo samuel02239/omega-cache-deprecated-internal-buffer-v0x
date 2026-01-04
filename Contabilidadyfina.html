@@ -1,0 +1,2237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contabilidad y Finanzas - Fondo de Jóvenes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --secondary-color: #1976D2;
+            --accent-color: #FF9800;
+            --danger-color: #D32F2F;
+            --success-color: #388E3C;
+            --warning-color: #F57C00;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --bg-light: #F5F5F5;
+            --bg-white: #FFFFFF;
+            --border-color: #E0E0E0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .stat-icon.income {
+            background-color: var(--success-color);
+        }
+
+        .stat-icon.expense {
+            background-color: var(--danger-color);
+        }
+
+        .stat-icon.balance {
+            background-color: var(--secondary-color);
+        }
+
+        .stat-icon.offering {
+            background-color: var(--accent-color);
+        }
+
+        .stat-info h3 {
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .stat-value.positive {
+            color: var(--success-color);
+        }
+
+        .stat-value.negative {
+            color: var(--danger-color);
+        }
+
+        /* Alertas */
+        .alerts {
+            margin-bottom: 30px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .alert.warning {
+            background-color: #FFF3E0;
+            border-left: 5px solid var(--warning-color);
+        }
+
+        .alert.info {
+            background-color: #E3F2FD;
+            border-left: 5px solid var(--secondary-color);
+        }
+
+        .alert.success {
+            background-color: #E8F5E9;
+            border-left: 5px solid var(--success-color);
+        }
+
+        .alert-icon {
+            font-size: 24px;
+        }
+
+        .alert.warning .alert-icon {
+            color: var(--warning-color);
+        }
+
+        .alert.info .alert-icon {
+            color: var(--secondary-color);
+        }
+
+        .alert.success .alert-icon {
+            color: var(--success-color);
+        }
+
+        /* Contenido principal */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section-title h2 {
+            font-size: 1.4rem;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #1565C0;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Tablas */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .amount-income {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .amount-expense {
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+            color: var(--text-light);
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Gráficos */
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        /* Filtros */
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Reportes */
+        .reports-section {
+            margin-top: 30px;
+        }
+
+        .report-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .report-card {
+            background-color: var(--bg-white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .report-card i {
+            font-size: 36px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="header-title">
+                    <h1>Contabilidad y Finanzas</h1>
+                    <p>Fondo de Jóvenes - Comité 2026</p>
+                </div>
+            </div>
+            
+            <div class="user-section">
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" id="backupBtn">
+                        <i class="fas fa-save"></i> Respaldar Datos
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-redo"></i> Nuevo Mes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Dashboard de estadísticas -->
+        <div class="dashboard">
+            <div class="stat-card">
+                <div class="stat-icon income">
+                    <i class="fas fa-hand-holding-usd"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Ingresos Totales</h3>
+                    <div class="stat-value positive" id="totalIncome">$0.00</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon expense">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Egresos Totales</h3>
+                    <div class="stat-value negative" id="totalExpense">$0.00</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon balance">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Saldo Actual</h3>
+                    <div class="stat-value positive" id="currentBalance">$0.00</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon offering">
+                    <i class="fas fa-church"></i>
+                </div>
+                <div class="stat-info">
+                    <h3>Ofrendas </h3>
+                    <div class="stat-value positive" id="totalOffering">$0.00</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Alertas -->
+        <div class="alerts" id="alertsContainer">
+            <div class="alert info">
+                <div class="alert-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div>Bienvenido al sistema de contabilidad. Comienza registrando tus ingresos y egresos.</div>
+            </div>
+        </div>
+        
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Columna izquierda -->
+            <div class="left-column">
+                <!-- Registro de transacciones -->
+                <div class="section">
+                    <div class="section-title">
+                        <h2><i class="fas fa-plus-circle"></i> Registrar Transacción</h2>
+                    </div>
+                    
+                    <div class="tabs">
+                        <div class="tab active" data-tab="income">Ingreso</div>
+                        <div class="tab" data-tab="expense">Egreso</div>
+                    </div>
+                    
+                    <!-- Formulario de ingreso -->
+                    <div id="incomeForm" class="tab-content active">
+                        <form id="addIncomeForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="incomeDate">Fecha</label>
+                                    <input type="date" id="incomeDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="incomeType">Tipo de Ingreso</label>
+                                    <select id="incomeType" required>
+                                        <option value="">Seleccionar</option>
+                                        <option value="ofrenda">Ofrenda </option>
+                                        <option value="donacion">Donación</option>
+                                        <option value="aporte ">Aporte comite</option>
+                                        <option value="otro">Otro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="incomeAmount">Monto ($)</label>
+                                    <input type="number" id="incomeAmount" min="0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="incomeResponsible">Responsable</label>
+                                    <input type="text" id="incomeResponsible" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="incomeDescription">Descripción</label>
+                                <textarea id="incomeDescription" rows="3" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Registrar Ingreso
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Formulario de egreso -->
+                    <div id="expenseForm" class="tab-content">
+                        <form id="addExpenseForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expenseDate">Fecha</label>
+                                    <input type="date" id="expenseDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expenseCategory">Categoría</label>
+                                    <select id="expenseCategory" required>
+                                        <option value="">Seleccionar</option>
+                                        <option value="ayuda">Ayuda Social</option>
+                                        <option value="actividades">Actividades</option>
+                                        <option value="transporte">Transporte</option>
+                                        <option value="materiales">Materiales</option>
+                                        <option value="eventos">Eventos</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expenseAmount">Monto ($)</label>
+                                    <input type="number" id="expenseAmount" min="0" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expenseAuthorized">Persona Autorizada</label>
+                                    <input type="text" id="expenseAuthorized" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="expenseReason">Motivo del Gasto</label>
+                                <textarea id="expenseReason" rows="3" required></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Registrar Egreso
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de distribución de gastos -->
+                <div class="section">
+                    <div class="section-title">
+                        <h2><i class="fas fa-chart-pie"></i> Distribución de Gastos</h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna derecha -->
+            <div class="right-column">
+                <!-- Tabla de transacciones recientes -->
+                <div class="section">
+                    <div class="section-title">
+                        <h2><i class="fas fa-history"></i> Transacciones Recientes</h2>
+                        <div class="filters">
+                            <select id="filterType">
+                                <option value="all">Todas</option>
+                                <option value="income">Ingresos</option>
+                                <option value="expense">Egresos</option>
+                            </select>
+                            <select id="filterMonth">
+                                <option value="all">Todos los meses</option>
+                                <!-- Los meses se cargarán dinámicamente -->
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsBody">
+                                <!-- Las transacciones se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Gráfico de balance mensual -->
+                <div class="section">
+                    <div class="section-title">
+                        <h2><i class="fas fa-chart-line"></i> Balance Mensual</h2>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="balanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección de reportes -->
+        <div class="section reports-section">
+            <div class="section-title">
+                <h2><i class="fas fa-file-alt"></i> Reportes</h2>
+            </div>
+            
+            <div class="report-options">
+                <div class="report-card" id="monthlyReport">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Reporte Mensual</h3>
+                    <p>Resumen de ingresos y egresos del mes</p>
+                </div>
+                
+                <div class="report-card" id="quarterlyReport">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Reporte Trimestral</h3>
+                    <p>Balance cada 3 meses</p>
+                </div>
+                
+                <div class="report-card" id="annualReport">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Reporte Anual</h3>
+                    <p>Resumen completo del año</p>
+                </div>
+                
+                <div class="report-card" id="offeringReport">
+                    <i class="fas fa-church"></i>
+                    <h3>Reporte de Ofrendas</h3>
+                    <p>Detalle de ofrendas </p>
+                </div>
+            </div>
+            
+            <div id="reportContent" style="display: none;">
+                <div class="section-title">
+                    <h2 id="reportTitle"></h2>
+                    <div>
+                        <button class="btn btn-secondary" id="printReport">
+                            <i class="fas fa-print"></i> Imprimir
+                        </button>
+                        <button class="btn btn-secondary" id="exportExcel">
+                            <i class="fas fa-file-excel"></i> Exportar
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="reportDetails">
+                    <!-- El contenido del reporte se cargará aquí -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Información de uso -->
+        <div class="section" style="margin-top: 30px;">
+            <div class="section-title">
+                <h2><i class="fas fa-info-circle"></i> Cómo Usar el Sistema</h2>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">📝 Primeros Pasos</h3>
+                    <ul style="padding-left: 20px; line-height: 1.6;">
+                        <li><strong>1.</strong> Comienza registrando las ofrendas  como "Ingresos"</li>
+                        <li><strong>2.</strong> Registra todos los gastos como "Egresos"</li>
+                        <li><strong>3.</strong> Usa descripciones claras para cada transacción</li>
+                        <li><strong>4.</strong> Revisa el saldo actual en el dashboard</li>
+                        <li><strong>5.</strong> Genera reportes mensuales para control</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 style="color: var(--primary-color); margin-bottom: 10px;">💡 Recomendaciones</h3>
+                    <ul style="padding-left: 20px; line-height: 1.6;">
+                        <li>• Registra las transacciones inmediatamente después de ocurrir</li>
+                        <li>• Clasifica correctamente cada ingreso y egreso</li>
+                        <li>• Revisa las alertas del sistema regularmente</li>
+                        <li>• Genera un reporte mensual para presentar al comité</li>
+                        <li>• Respaldar los datos periódicamente</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background-color: #E8F5E9; border-radius: 10px;">
+                <h3 style="color: var(--primary-dark); margin-bottom: 10px;"><i class="fas fa-lightbulb"></i> Tip para Ofrendas </h3>
+                <p>Para registrar ofrendas : selecciona "Ingreso" → Tipo "Ofrenda Sabatina" → Fecha del sábado correspondiente → Monto recaudado → Responsable quien recolectó.</p>
+            </div>
+        </div>
+        
+        <!-- Nota sobre datos -->
+        <div style="text-align: center; margin-top: 30px; padding: 15px; background-color: #FFF3E0; border-radius: 10px;">
+            <p><i class="fas fa-exclamation-triangle" style="color: var(--warning-color);"></i> <strong>Nota:</strong> Los datos se guardan automáticamente en tu navegador. Para respaldar, usa el botón "Respaldar Datos".</p>
+        </div>
+    </div>
+
+    <script>
+        // Datos iniciales y configuración
+        let transactions = [];
+        
+        // Cargar datos del localStorage
+        function loadData() {
+            const savedTransactions = localStorage.getItem('youthFundTransactions');
+            if (savedTransactions) {
+                transactions = JSON.parse(savedTransactions);
+            } else {
+                // Datos de ejemplo para demostración
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear();
+                const currentMonth = currentDate.getMonth() + 1;
+                
+                transactions = [
+                    // Ingresos - Ofrendas  del mes actual
+                    { id: 1, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-01`, amount: 150.50, description: 'Ofrenda sabatina primer sábado', category: 'ofrenda', responsible: 'Juan Pérez', month: currentMonth, year: currentYear },
+                    { id: 2, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-08`, amount: 180.75, description: 'Ofrenda sabatina segundo sábado', category: 'ofrenda', responsible: 'María García', month: currentMonth, year: currentYear },
+                    { id: 3, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-15`, amount: 210.25, description: 'Ofrenda sabatina tercer sábado', category: 'ofrenda', responsible: 'Carlos López', month: currentMonth, year: currentYear },
+                    { id: 4, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-22`, amount: 195.00, description: 'Ofrenda sabatina cuarto sábado', category: 'ofrenda', responsible: 'Ana Martínez', month: currentMonth, year: currentYear },
+                    
+                    // Ingresos - Otros
+                    { id: 5, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-10`, amount: 500.00, description: 'Donación para campamento', category: 'donacion', responsible: 'Pedro Sánchez', month: currentMonth, year: currentYear },
+                    { id: 6, type: 'income', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-20`, amount: 350.00, description: 'Venta de comida en reunión', category: 'actividad', responsible: 'Comité de jóvenes', month: currentMonth, year: currentYear },
+                    
+                    // Egresos del mes actual
+                    { id: 7, type: 'expense', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-05`, amount: 120.00, description: 'Materiales para reunión juvenil', category: 'materiales', authorized: 'Juan Pérez', month: currentMonth, year: currentYear },
+                    { id: 8, type: 'expense', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-12`, amount: 250.00, description: 'Ayuda social a familia necesitada', category: 'ayuda', authorized: 'María García', month: currentMonth, year: currentYear },
+                    { id: 9, type: 'expense', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-18`, amount: 180.50, description: 'Transporte para actividad recreativa', category: 'transporte', authorized: 'Carlos López', month: currentMonth, year: currentYear },
+                    { id: 10, type: 'expense', date: `${currentYear}-${String(currentMonth).padStart(2, '0')}-25`, amount: 300.00, description: 'Preparación evento especial', category: 'eventos', authorized: 'Ana Martínez', month: currentMonth, year: currentYear },
+                ];
+            }
+        }
+        
+        // Guardar datos en localStorage
+        function saveData() {
+            localStorage.setItem('youthFundTransactions', JSON.stringify(transactions));
+        }
+        
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            loadData();
+            setupEventListeners();
+            initializeDateInputs();
+            updateDashboard();
+            updateTransactionsTable();
+            updateCharts();
+            updateAlerts();
+            loadMonthFilters();
+        });
+        
+        // Configurar event listeners
+        function setupEventListeners() {
+            // Tabs para formularios
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Actualizar tabs activos
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Mostrar contenido del tab activo
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabId}Form`).classList.add('active');
+                });
+            });
+            
+            // Formulario de ingreso
+            document.getElementById('addIncomeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const date = document.getElementById('incomeDate').value;
+                const type = document.getElementById('incomeType').value;
+                const amount = parseFloat(document.getElementById('incomeAmount').value);
+                const description = document.getElementById('incomeDescription').value;
+                const responsible = document.getElementById('incomeResponsible').value;
+                
+                // Validar campos
+                if (!date || !type || !amount || !description || !responsible) {
+                    alert('Por favor, completa todos los campos');
+                    return;
+                }
+                
+                // Crear nueva transacción
+                const transactionDate = new Date(date);
+                const newTransaction = {
+                    id: Date.now(),
+                    type: 'income',
+                    date: date,
+                    amount: amount,
+                    description: description,
+                    category: type,
+                    responsible: responsible,
+                    month: transactionDate.getMonth() + 1,
+                    year: transactionDate.getFullYear(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                transactions.push(newTransaction);
+                saveData();
+                
+                // Actualizar interfaz
+                updateDashboard();
+                updateTransactionsTable();
+                updateCharts();
+                updateAlerts();
+                loadMonthFilters();
+                
+                // Limpiar formulario
+                this.reset();
+                document.getElementById('incomeDate').value = getCurrentDate();
+                
+                // Mostrar mensaje de éxito
+                showSuccessMessage('Ingreso registrado exitosamente');
+            });
+            
+            // Formulario de egreso
+            document.getElementById('addExpenseForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const date = document.getElementById('expenseDate').value;
+                const category = document.getElementById('expenseCategory').value;
+                const amount = parseFloat(document.getElementById('expenseAmount').value);
+                const reason = document.getElementById('expenseReason').value;
+                const authorized = document.getElementById('expenseAuthorized').value;
+                
+                // Validar campos
+                if (!date || !category || !amount || !reason || !authorized) {
+                    alert('Por favor, completa todos los campos');
+                    return;
+                }
+                
+                // Crear nueva transacción
+                const transactionDate = new Date(date);
+                const newTransaction = {
+                    id: Date.now(),
+                    type: 'expense',
+                    date: date,
+                    amount: amount,
+                    description: reason,
+                    category: category,
+                    authorized: authorized,
+                    month: transactionDate.getMonth() + 1,
+                    year: transactionDate.getFullYear(),
+                    createdAt: new Date().toISOString()
+                };
+                
+                transactions.push(newTransaction);
+                saveData();
+                
+                // Actualizar interfaz
+                updateDashboard();
+                updateTransactionsTable();
+                updateCharts();
+                updateAlerts();
+                loadMonthFilters();
+                
+                // Limpiar formulario
+                this.reset();
+                document.getElementById('expenseDate').value = getCurrentDate();
+                
+                // Mostrar mensaje de éxito
+                showSuccessMessage('Egreso registrado exitosamente');
+            });
+            
+            // Filtros de transacciones
+            document.getElementById('filterType').addEventListener('change', updateTransactionsTable);
+            document.getElementById('filterMonth').addEventListener('change', updateTransactionsTable);
+            
+            // Botones de reportes
+            document.getElementById('monthlyReport').addEventListener('click', () => generateReport('monthly'));
+            document.getElementById('quarterlyReport').addEventListener('click', () => generateReport('quarterly'));
+            document.getElementById('annualReport').addEventListener('click', () => generateReport('annual'));
+            document.getElementById('offeringReport').addEventListener('click', () => generateReport('offering'));
+            
+            // Botones de exportación
+            document.getElementById('printReport').addEventListener('click', printReport);
+            document.getElementById('exportExcel').addEventListener('click', exportToExcel);
+            
+            // Botón de respaldo
+            document.getElementById('backupBtn').addEventListener('click', backupData);
+            
+            // Botón de nuevo mes
+            document.getElementById('resetBtn').addEventListener('click', startNewMonth);
+        }
+        
+        // Inicializar campos de fecha con la fecha actual
+        function initializeDateInputs() {
+            const currentDate = getCurrentDate();
+            document.getElementById('incomeDate').value = currentDate;
+            document.getElementById('expenseDate').value = currentDate;
+        }
+        
+        // Obtener fecha actual en formato YYYY-MM-DD
+        function getCurrentDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        // Actualizar el dashboard con estadísticas
+        function updateDashboard() {
+            // Calcular totales
+            const totalIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const totalExpense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const currentBalance = totalIncome - totalExpense;
+            
+            const totalOffering = transactions
+                .filter(t => t.type === 'income' && t.category === 'ofrenda')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            // Actualizar elementos del DOM
+            document.getElementById('totalIncome').textContent = `$${totalIncome.toFixed(2)}`;
+            document.getElementById('totalExpense').textContent = `$${totalExpense.toFixed(2)}`;
+            document.getElementById('currentBalance').textContent = `$${currentBalance.toFixed(2)}`;
+            document.getElementById('totalOffering').textContent = `$${totalOffering.toFixed(2)}`;
+            
+            // Actualizar colores según el saldo
+            const balanceElement = document.getElementById('currentBalance');
+            balanceElement.className = currentBalance >= 0 ? 'stat-value positive' : 'stat-value negative';
+        }
+        
+        // Actualizar tabla de transacciones
+        function updateTransactionsTable() {
+            const filterType = document.getElementById('filterType').value;
+            const filterMonth = document.getElementById('filterMonth').value;
+            
+            // Filtrar transacciones
+            let filteredTransactions = transactions;
+            
+            if (filterType !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.type === filterType);
+            }
+            
+            if (filterMonth !== 'all') {
+                filteredTransactions = filteredTransactions.filter(t => t.month == filterMonth);
+            }
+            
+            // Ordenar por fecha (más reciente primero)
+            filteredTransactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // Actualizar tabla
+            const tbody = document.getElementById('transactionsBody');
+            tbody.innerHTML = '';
+            
+            filteredTransactions.forEach(transaction => {
+                const row = document.createElement('tr');
+                
+                // Formatear fecha
+                const dateObj = new Date(transaction.date);
+                const formattedDate = dateObj.toLocaleDateString('es-ES');
+                
+                // Determinar tipo y categoría
+                const typeText = transaction.type === 'income' ? 'Ingreso' : 'Egreso';
+                const categoryText = getCategoryText(transaction.category);
+                
+                // Determinar clase para el monto
+                const amountClass = transaction.type === 'income' ? 'amount-income' : 'amount-expense';
+                const amountPrefix = transaction.type === 'income' ? '+' : '-';
+                
+                // Crear celdas
+                row.innerHTML = `
+                    <td>${formattedDate}</td>
+                    <td>${typeText} - ${categoryText}</td>
+                    <td>${transaction.description}</td>
+                    <td class="${amountClass}">${amountPrefix}$${transaction.amount.toFixed(2)}</td>
+                    <td class="actions">
+                        <button class="action-btn view-btn" data-id="${transaction.id}" title="Ver detalles">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn" data-id="${transaction.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${transaction.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Agregar event listeners a los botones
+            addTransactionButtonListeners();
+        }
+        
+        // Obtener texto descriptivo para categorías
+        function getCategoryText(category) {
+            const categories = {
+                'ofrenda': 'Ofrenda',
+                'donacion': 'Donación',
+                'actividad': 'Actividad',
+                'aporte': 'Aporte Especial',
+                'otro': 'Otro Ingreso',
+                'ayuda': 'Ayuda Social',
+                'actividades': 'Actividades',
+                'transporte': 'Transporte',
+                'materiales': 'Materiales',
+                'eventos': 'Eventos',
+                'otros': 'Otros Gastos'
+            };
+            
+            return categories[category] || category;
+        }
+        
+        // Agregar event listeners a los botones de transacciones
+        function addTransactionButtonListeners() {
+            // Botones de ver
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    viewTransactionDetails(id);
+                });
+            });
+            
+            // Botones de editar
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    editTransaction(id);
+                });
+            });
+            
+            // Botones de eliminar
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteTransaction(id);
+                });
+            });
+        }
+        
+        // Ver detalles de transacción
+        function viewTransactionDetails(id) {
+            const transaction = transactions.find(t => t.id === id);
+            if (!transaction) return;
+            
+            const typeText = transaction.type === 'income' ? 'Ingreso' : 'Egreso';
+            const categoryText = getCategoryText(transaction.category);
+            const dateObj = new Date(transaction.date);
+            const formattedDate = dateObj.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            let details = `
+                <div style="padding: 20px; max-width: 500px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 15px;">Detalles de la Transacción</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <div><strong>Tipo:</strong></div><div>${typeText}</div>
+                        <div><strong>Categoría:</strong></div><div>${categoryText}</div>
+                        <div><strong>Fecha:</strong></div><div>${formattedDate}</div>
+                        <div><strong>Monto:</strong></div><div>$${transaction.amount.toFixed(2)}</div>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong>Descripción:</strong><br>
+                        ${transaction.description}
+                    </div>
+            `;
+            
+            if (transaction.type === 'income') {
+                details += `<div><strong>Responsable:</strong> ${transaction.responsible}</div>`;
+            } else {
+                details += `<div><strong>Autorizado por:</strong> ${transaction.authorized}</div>`;
+            }
+            
+            details += `
+                    <div style="margin-top: 15px; font-size: 0.9em; color: var(--text-light);">
+                        <strong>Registrado el:</strong> ${new Date(transaction.createdAt).toLocaleString('es-ES')}
+                    </div>
+                </div>
+            `;
+            
+            // Mostrar modal
+            showModal('Detalles de Transacción', details);
+        }
+        
+        // Editar transacción
+        function editTransaction(id) {
+            const transaction = transactions.find(t => t.id === id);
+            if (!transaction) return;
+            
+            let formHtml = '';
+            
+            if (transaction.type === 'income') {
+                formHtml = `
+                    <form id="editIncomeForm" style="padding: 20px;">
+                        <div class="form-group">
+                            <label for="editIncomeDate">Fecha</label>
+                            <input type="date" id="editIncomeDate" value="${transaction.date}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editIncomeType">Tipo de Ingreso</label>
+                            <select id="editIncomeType" required>
+                                <option value="ofrenda" ${transaction.category === 'ofrenda' ? 'selected' : ''}>Ofrenda Sabatina</option>
+                                <option value="donacion" ${transaction.category === 'donacion' ? 'selected' : ''}>Donación</option>
+                                <option value="actividad" ${transaction.category === 'actividad' ? 'selected' : ''}>Actividad</option>
+                                <option value="aporte" ${transaction.category === 'aporte' ? 'selected' : ''}>Aporte Especial</option>
+                                <option value="otro" ${transaction.category === 'otro' ? 'selected' : ''}>Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editIncomeAmount">Monto ($)</label>
+                            <input type="number" id="editIncomeAmount" value="${transaction.amount}" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editIncomeResponsible">Responsable</label>
+                            <input type="text" id="editIncomeResponsible" value="${transaction.responsible}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editIncomeDescription">Descripción</label>
+                            <textarea id="editIncomeDescription" rows="3" required>${transaction.description}</textarea>
+                        </div>
+                        <input type="hidden" id="editTransactionId" value="${transaction.id}">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                `;
+            } else {
+                formHtml = `
+                    <form id="editExpenseForm" style="padding: 20px;">
+                        <div class="form-group">
+                            <label for="editExpenseDate">Fecha</label>
+                            <input type="date" id="editExpenseDate" value="${transaction.date}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editExpenseCategory">Categoría</label>
+                            <select id="editExpenseCategory" required>
+                                <option value="ayuda" ${transaction.category === 'ayuda' ? 'selected' : ''}>Ayuda Social</option>
+                                <option value="actividades" ${transaction.category === 'actividades' ? 'selected' : ''}>Actividades</option>
+                                <option value="transporte" ${transaction.category === 'transporte' ? 'selected' : ''}>Transporte</option>
+                                <option value="materiales" ${transaction.category === 'materiales' ? 'selected' : ''}>Materiales</option>
+                                <option value="eventos" ${transaction.category === 'eventos' ? 'selected' : ''}>Eventos</option>
+                                <option value="otros" ${transaction.category === 'otros' ? 'selected' : ''}>Otros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editExpenseAmount">Monto ($)</label>
+                            <input type="number" id="editExpenseAmount" value="${transaction.amount}" min="0" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editExpenseAuthorized">Persona Autorizada</label>
+                            <input type="text" id="editExpenseAuthorized" value="${transaction.authorized}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editExpenseReason">Motivo del Gasto</label>
+                            <textarea id="editExpenseReason" rows="3" required>${transaction.description}</textarea>
+                        </div>
+                        <input type="hidden" id="editTransactionId" value="${transaction.id}">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </form>
+                `;
+            }
+            
+            // Mostrar modal de edición
+            showModal('Editar Transacción', formHtml);
+            
+            // Configurar el formulario de edición
+            if (transaction.type === 'income') {
+                document.getElementById('editIncomeForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = parseInt(document.getElementById('editTransactionId').value);
+                    const date = document.getElementById('editIncomeDate').value;
+                    const type = document.getElementById('editIncomeType').value;
+                    const amount = parseFloat(document.getElementById('editIncomeAmount').value);
+                    const description = document.getElementById('editIncomeDescription').value;
+                    const responsible = document.getElementById('editIncomeResponsible').value;
+                    
+                    // Actualizar transacción
+                    const transactionIndex = transactions.findIndex(t => t.id === id);
+                    if (transactionIndex !== -1) {
+                        const transactionDate = new Date(date);
+                        transactions[transactionIndex] = {
+                            ...transactions[transactionIndex],
+                            date: date,
+                            amount: amount,
+                            description: description,
+                            category: type,
+                            responsible: responsible,
+                            month: transactionDate.getMonth() + 1,
+                            year: transactionDate.getFullYear()
+                        };
+                        
+                        saveData();
+                        updateDashboard();
+                        updateTransactionsTable();
+                        updateCharts();
+                        updateAlerts();
+                        
+                        closeModal();
+                        showSuccessMessage('Transacción actualizada exitosamente');
+                    }
+                });
+            } else {
+                document.getElementById('editExpenseForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const id = parseInt(document.getElementById('editTransactionId').value);
+                    const date = document.getElementById('editExpenseDate').value;
+                    const category = document.getElementById('editExpenseCategory').value;
+                    const amount = parseFloat(document.getElementById('editExpenseAmount').value);
+                    const reason = document.getElementById('editExpenseReason').value;
+                    const authorized = document.getElementById('editExpenseAuthorized').value;
+                    
+                    // Actualizar transacción
+                    const transactionIndex = transactions.findIndex(t => t.id === id);
+                    if (transactionIndex !== -1) {
+                        const transactionDate = new Date(date);
+                        transactions[transactionIndex] = {
+                            ...transactions[transactionIndex],
+                            date: date,
+                            amount: amount,
+                            description: reason,
+                            category: category,
+                            authorized: authorized,
+                            month: transactionDate.getMonth() + 1,
+                            year: transactionDate.getFullYear()
+                        };
+                        
+                        saveData();
+                        updateDashboard();
+                        updateTransactionsTable();
+                        updateCharts();
+                        updateAlerts();
+                        
+                        closeModal();
+                        showSuccessMessage('Transacción actualizada exitosamente');
+                    }
+                });
+            }
+        }
+        
+        // Eliminar transacción
+        function deleteTransaction(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta transacción?')) return;
+            
+            const index = transactions.findIndex(t => t.id === id);
+            if (index !== -1) {
+                transactions.splice(index, 1);
+                saveData();
+                
+                // Actualizar interfaz
+                updateDashboard();
+                updateTransactionsTable();
+                updateCharts();
+                updateAlerts();
+                
+                showSuccessMessage('Transacción eliminada exitosamente');
+            }
+        }
+        
+        // Actualizar gráficos
+        function updateCharts() {
+            updateExpenseChart();
+            updateBalanceChart();
+        }
+        
+        // Actualizar gráfico de distribución de gastos
+        function updateExpenseChart() {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            
+            // Agrupar gastos por categoría
+            const expensesByCategory = {};
+            transactions
+                .filter(t => t.type === 'expense')
+                .forEach(transaction => {
+                    const category = getCategoryText(transaction.category);
+                    if (!expensesByCategory[category]) {
+                        expensesByCategory[category] = 0;
+                    }
+                    expensesByCategory[category] += transaction.amount;
+                });
+            
+            // Preparar datos para el gráfico
+            const categories = Object.keys(expensesByCategory);
+            const amounts = Object.values(expensesByCategory);
+            
+            // Si no hay gastos, mostrar mensaje
+            if (categories.length === 0) {
+                const canvas = document.getElementById('expenseChart');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#666';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('No hay datos de gastos', canvas.width/2, canvas.height/2);
+                return;
+            }
+            
+            // Colores para el gráfico
+            const backgroundColors = [
+                '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                '#9966FF', '#FF9F40', '#8AC926', '#1982C4',
+                '#6A4C93', '#F15BB5'
+            ];
+            
+            // Destruir gráfico anterior si existe
+            if (window.expenseChartInstance) {
+                window.expenseChartInstance.destroy();
+            }
+            
+            // Crear nuevo gráfico
+            window.expenseChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        data: amounts,
+                        backgroundColor: backgroundColors.slice(0, categories.length),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Distribución de Gastos'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Actualizar gráfico de balance mensual
+        function updateBalanceChart() {
+            const ctx = document.getElementById('balanceChart').getContext('2d');
+            
+            // Obtener los últimos 6 meses
+            const currentDate = new Date();
+            const months = [];
+            const incomeData = [];
+            const expenseData = [];
+            const balanceData = [];
+            
+            for (let i = 5; i >= 0; i--) {
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1);
+                const month = date.getMonth() + 1;
+                const year = date.getFullYear();
+                
+                // Nombre del mes
+                const monthName = date.toLocaleDateString('es-ES', { month: 'short' });
+                months.push(`${monthName} ${year}`);
+                
+                // Calcular ingresos y egresos del mes
+                const monthIncome = transactions
+                    .filter(t => t.type === 'income' && t.month === month && t.year === year)
+                    .reduce((sum, t) => sum + t.amount, 0);
+                    
+                const monthExpense = transactions
+                    .filter(t => t.type === 'expense' && t.month === month && t.year === year)
+                    .reduce((sum, t) => sum + t.amount, 0);
+                
+                incomeData.push(monthIncome);
+                expenseData.push(monthExpense);
+                balanceData.push(monthIncome - monthExpense);
+            }
+            
+            // Si no hay datos, mostrar mensaje
+            if (incomeData.every(v => v === 0) && expenseData.every(v => v === 0)) {
+                const canvas = document.getElementById('balanceChart');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#666';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('No hay datos para mostrar', canvas.width/2, canvas.height/2);
+                return;
+            }
+            
+            // Destruir gráfico anterior si existe
+            if (window.balanceChartInstance) {
+                window.balanceChartInstance.destroy();
+            }
+            
+            // Crear nuevo gráfico
+            window.balanceChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months,
+                    datasets: [
+                        {
+                            label: 'Ingresos',
+                            data: incomeData,
+                            borderColor: '#4CAF50',
+                            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Egresos',
+                            data: expenseData,
+                            borderColor: '#F44336',
+                            backgroundColor: 'rgba(244, 67, 54, 0.1)',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: 'Balance',
+                            data: balanceData,
+                            borderColor: '#2196F3',
+                            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolución Mensual'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '$' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Actualizar alertas
+        function updateAlerts() {
+            const container = document.getElementById('alertsContainer');
+            container.innerHTML = '';
+            
+            // Calcular saldo actual
+            const totalIncome = transactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const totalExpense = transactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const currentBalance = totalIncome - totalExpense;
+            
+            // Alertas según condiciones
+            const alerts = [];
+            
+            // Saldo bajo
+            if (currentBalance < 100) {
+                alerts.push({
+                    type: 'warning',
+                    icon: 'fas fa-exclamation-triangle',
+                    message: '¡Atención! El saldo del fondo es bajo. Considera recaudar más fondos.'
+                });
+            }
+            
+            // Sin transacciones este mes
+            const currentMonth = new Date().getMonth() + 1;
+            const currentYear = new Date().getFullYear();
+            const hasTransactionsThisMonth = transactions.some(t => 
+                t.month === currentMonth && t.year === currentYear
+            );
+            
+            if (!hasTransactionsThisMonth && transactions.length > 0) {
+                alerts.push({
+                    type: 'info',
+                    icon: 'fas fa-info-circle',
+                    message: 'No hay transacciones registradas este mes. Recuerda registrar todas las ofrendas y gastos.'
+                });
+            }
+            
+            // Sin ofrendas registradas este mes
+            const hasOfferingsThisMonth = transactions.some(t => 
+                t.type === 'income' && t.category === 'ofrenda' && 
+                t.month === currentMonth && t.year === currentYear
+            );
+            
+            if (!hasOfferingsThisMonth && transactions.length > 0) {
+                alerts.push({
+                    type: 'info',
+                    icon: 'fas fa-church',
+                    message: 'No hay ofrendas  registradas este mes. Recuerda registrar todas las ofrendas.'
+                });
+            }
+            
+            // Mostrar alertas
+            alerts.forEach(alert => {
+                const alertElement = document.createElement('div');
+                alertElement.className = `alert ${alert.type}`;
+                alertElement.innerHTML = `
+                    <div class="alert-icon">
+                        <i class="${alert.icon}"></i>
+                    </div>
+                    <div>${alert.message}</div>
+                `;
+                container.appendChild(alertElement);
+            });
+            
+            // Si no hay alertas, mostrar mensaje positivo
+            if (alerts.length === 0 && transactions.length > 0) {
+                container.innerHTML = '<div class="alert success"><div class="alert-icon"><i class="fas fa-check-circle"></i></div><div>Todo está en orden. El fondo se está administrando correctamente.</div></div>';
+            }
+        }
+        
+        // Cargar filtros de meses
+        function loadMonthFilters() {
+            const select = document.getElementById('filterMonth');
+            
+            // Guardar la opción seleccionada actual
+            const currentSelection = select.value;
+            
+            // Limpiar opciones excepto la primera
+            while (select.options.length > 1) {
+                select.remove(1);
+            }
+            
+            // Obtener meses únicos de las transacciones
+            const monthsSet = new Set();
+            transactions.forEach(t => {
+                if (t.month && t.year) {
+                    const date = new Date(t.year, t.month - 1, 1);
+                    const monthName = date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+                    monthsSet.add({
+                        value: t.month,
+                        text: monthName,
+                        year: t.year
+                    });
+                }
+            });
+            
+            // Ordenar meses (más reciente primero)
+            const monthsArray = Array.from(monthsSet);
+            monthsArray.sort((a, b) => {
+                // Primero por año, luego por mes
+                if (b.year !== a.year) return b.year - a.year;
+                return b.value - a.value;
+            });
+            
+            // Agregar opciones al select
+            monthsArray.forEach(month => {
+                const option = document.createElement('option');
+                option.value = `${month.value}-${month.year}`;
+                option.textContent = month.text;
+                select.appendChild(option);
+            });
+            
+            // Restaurar la selección anterior si existe
+            if (currentSelection && currentSelection !== 'all') {
+                select.value = currentSelection;
+            }
+        }
+        
+        // Generar reportes
+        function generateReport(type) {
+            const reportContent = document.getElementById('reportContent');
+            const reportTitle = document.getElementById('reportTitle');
+            const reportDetails = document.getElementById('reportDetails');
+            
+            // Mostrar sección de reportes
+            reportContent.style.display = 'block';
+            
+            let title = '';
+            let content = '';
+            
+            switch(type) {
+                case 'monthly':
+                    title = 'Reporte Mensual';
+                    content = generateMonthlyReport();
+                    break;
+                case 'quarterly':
+                    title = 'Reporte Trimestral';
+                    content = generateQuarterlyReport();
+                    break;
+                case 'annual':
+                    title = 'Reporte Anual';
+                    content = generateAnnualReport();
+                    break;
+                case 'offering':
+                    title = 'Reporte de Ofrendas ';
+                    content = generateOfferingReport();
+                    break;
+            }
+            
+            reportTitle.textContent = title;
+            reportDetails.innerHTML = content;
+            
+            // Scroll a la sección de reportes
+            reportContent.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Generar reporte mensual
+        function generateMonthlyReport() {
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth() + 1;
+            const currentYear = currentDate.getFullYear();
+            
+            // Filtrar transacciones del mes actual
+            const monthlyTransactions = transactions.filter(t => 
+                t.month === currentMonth && t.year === currentYear
+            );
+            
+            // Calcular totales
+            const monthlyIncome = monthlyTransactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const monthlyExpense = monthlyTransactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const monthlyBalance = monthlyIncome - monthlyExpense;
+            
+            // Obtener ofrendas del mes
+            const monthlyOfferings = monthlyTransactions
+                .filter(t => t.type === 'income' && t.category === 'ofrenda');
+                
+            const totalOfferings = monthlyOfferings.reduce((sum, t) => sum + t.amount, 0);
+            const averageOffering = monthlyOfferings.length > 0 ? totalOfferings / monthlyOfferings.length : 0;
+            
+            // Crear tabla de transacciones
+            let transactionsTable = '';
+            
+            if (monthlyTransactions.length > 0) {
+                transactionsTable = '<table style="width:100%"><thead><tr><th>Fecha</th><th>Tipo</th><th>Descripción</th><th>Monto</th></tr></thead><tbody>';
+                
+                monthlyTransactions.forEach(t => {
+                    const typeText = t.type === 'income' ? 'Ingreso' : 'Egreso';
+                    const categoryText = getCategoryText(t.category);
+                    const dateObj = new Date(t.date);
+                    const formattedDate = dateObj.toLocaleDateString('es-ES');
+                    const amountClass = t.type === 'income' ? 'amount-income' : 'amount-expense';
+                    const amountPrefix = t.type === 'income' ? '+' : '-';
+                    
+                    transactionsTable += `
+                        <tr>
+                            <td>${formattedDate}</td>
+                            <td>${typeText} - ${categoryText}</td>
+                            <td>${t.description}</td>
+                            <td class="${amountClass}">${amountPrefix}$${t.amount.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+                
+                transactionsTable += '</tbody></table>';
+            } else {
+                transactionsTable = '<p style="text-align:center; padding:20px; color:#666;">No hay transacciones registradas este mes.</p>';
+            }
+            
+            // Construir contenido del reporte
+            return `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Período:</strong> ${currentDate.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' })}</p>
+                    <p><strong>Total Ingresos:</strong> $${monthlyIncome.toFixed(2)}</p>
+                    <p><strong>Total Egresos:</strong> $${monthlyExpense.toFixed(2)}</p>
+                    <p><strong>Balance del Mes:</strong> $${monthlyBalance.toFixed(2)}</p>
+                    <p><strong>Total de Ofrendas:</strong> $${totalOfferings.toFixed(2)}</p>
+                    <p><strong>Promedio por Ofrenda:</strong> $${averageOffering.toFixed(2)}</p>
+                    <p><strong>Cantidad de Ofrendas:</strong> ${monthlyOfferings.length}</p>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-color);">Transacciones del Mes</h3>
+                <div class="table-container">
+                    ${transactionsTable}
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
+                    <h4>Análisis Financiero</h4>
+                    <p>${monthlyBalance >= 0 ? 
+                        '✅ El fondo tiene un balance positivo este mes.' : 
+                        '⚠️ El fondo tiene un balance negativo este mes. Considera reducir gastos o aumentar ingresos.'}</p>
+                    <p>${monthlyOfferings.length >= 4 ? 
+                        '✅ Se registraron ofrendas sabatinas todas las semanas.' : 
+                        'ℹ️ Faltan registros de ofrendas  para algunas semanas.'}</p>
+                </div>
+            `;
+        }
+        
+        // Generar reporte trimestral
+        function generateQuarterlyReport() {
+            const currentDate = new Date();
+            const currentQuarter = Math.floor((currentDate.getMonth() + 3) / 3);
+            const currentYear = currentDate.getFullYear();
+            
+            // Determinar meses del trimestre
+            const quarterMonths = [];
+            for (let i = 1; i <= 3; i++) {
+                quarterMonths.push((currentQuarter - 1) * 3 + i);
+            }
+            
+            let content = `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Período:</strong> ${getQuarterName(currentQuarter)} Trimestre ${currentYear}</p>
+            `;
+            
+            let quarterIncome = 0;
+            let quarterExpense = 0;
+            
+            // Generar datos por mes
+            quarterMonths.forEach(month => {
+                // Filtrar transacciones del mes
+                const monthlyTransactions = transactions.filter(t => 
+                    t.month === month && t.year === currentYear
+                );
+                
+                // Calcular totales del mes
+                const monthlyIncome = monthlyTransactions
+                    .filter(t => t.type === 'income')
+                    .reduce((sum, t) => sum + t.amount, 0);
+                    
+                const monthlyExpense = monthlyTransactions
+                    .filter(t => t.type === 'expense')
+                    .reduce((sum, t) => sum + t.amount, 0);
+                    
+                quarterIncome += monthlyIncome;
+                quarterExpense += monthlyExpense;
+                
+                const monthName = new Date(currentYear, month - 1, 1).toLocaleDateString('es-ES', { month: 'long' });
+                const monthlyBalance = monthlyIncome - monthlyExpense;
+                
+                content += `
+                    <div style="margin-bottom: 15px; padding: 10px; border-left: 3px solid var(--primary-color); background-color: #f9f9f9;">
+                        <h4>${monthName}</h4>
+                        <p><strong>Ingresos:</strong> $${monthlyIncome.toFixed(2)}</p>
+                        <p><strong>Egresos:</strong> $${monthlyExpense.toFixed(2)}</p>
+                        <p><strong>Balance:</strong> $${monthlyBalance.toFixed(2)}</p>
+                    </div>
+                `;
+            });
+            
+            const quarterBalance = quarterIncome - quarterExpense;
+            
+            content += `
+                    <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
+                        <h4>Resumen Trimestral</h4>
+                        <p><strong>Total Ingresos del Trimestre:</strong> $${quarterIncome.toFixed(2)}</p>
+                        <p><strong>Total Egresos del Trimestre:</strong> $${quarterExpense.toFixed(2)}</p>
+                        <p><strong>Balance del Trimestre:</strong> $${quarterBalance.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
+            
+            return content;
+        }
+        
+        // Generar reporte anual
+        function generateAnnualReport() {
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            
+            // Filtrar transacciones del año actual
+            const annualTransactions = transactions.filter(t => t.year === currentYear);
+            
+            // Calcular totales anuales
+            const annualIncome = annualTransactions
+                .filter(t => t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const annualExpense = annualTransactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + t.amount, 0);
+                
+            const annualBalance = annualIncome - annualExpense;
+            
+            // Calcular por categorías
+            const incomeByCategory = {};
+            const expenseByCategory = {};
+            
+            annualTransactions.forEach(t => {
+                const category = getCategoryText(t.category);
+                if (t.type === 'income') {
+                    if (!incomeByCategory[category]) incomeByCategory[category] = 0;
+                    incomeByCategory[category] += t.amount;
+                } else {
+                    if (!expenseByCategory[category]) expenseByCategory[category] = 0;
+                    expenseByCategory[category] += t.amount;
+                }
+            });
+            
+            // Crear tabla de categorías de ingresos
+            let incomeCategoriesTable = '';
+            
+            if (Object.keys(incomeByCategory).length > 0) {
+                incomeCategoriesTable = '<table><thead><tr><th>Categoría</th><th>Monto</th><th>% del Total</th></tr></thead><tbody>';
+                
+                Object.entries(incomeByCategory).forEach(([category, amount]) => {
+                    const percentage = (amount / annualIncome * 100).toFixed(1);
+                    incomeCategoriesTable += `
+                        <tr>
+                            <td>${category}</td>
+                            <td>$${amount.toFixed(2)}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                incomeCategoriesTable += '</tbody></table>';
+            } else {
+                incomeCategoriesTable = '<p style="text-align:center; padding:10px; color:#666;">No hay ingresos registrados</p>';
+            }
+            
+            // Crear tabla de categorías de egresos
+            let expenseCategoriesTable = '';
+            
+            if (Object.keys(expenseByCategory).length > 0) {
+                expenseCategoriesTable = '<table><thead><tr><th>Categoría</th><th>Monto</th><th>% del Total</th></tr></thead><tbody>';
+                
+                Object.entries(expenseByCategory).forEach(([category, amount]) => {
+                    const percentage = (amount / annualExpense * 100).toFixed(1);
+                    expenseCategoriesTable += `
+                        <tr>
+                            <td>${category}</td>
+                            <td>$${amount.toFixed(2)}</td>
+                            <td>${percentage}%</td>
+                        </tr>
+                    `;
+                });
+                
+                expenseCategoriesTable += '</tbody></table>';
+            } else {
+                expenseCategoriesTable = '<p style="text-align:center; padding:10px; color:#666;">No hay egresos registrados</p>';
+            }
+            
+            return `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Período:</strong> Año ${currentYear}</p>
+                    <p><strong>Total Ingresos Anuales:</strong> $${annualIncome.toFixed(2)}</p>
+                    <p><strong>Total Egresos Anuales:</strong> $${annualExpense.toFixed(2)}</p>
+                    <p><strong>Balance Anual:</strong> $${annualBalance.toFixed(2)}</p>
+                    <p><strong>Cantidad de Transacciones:</strong> ${annualTransactions.length}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                    <div>
+                        <h4>Ingresos por Categoría</h4>
+                        <div class="table-container">
+                            ${incomeCategoriesTable}
+                        </div>
+                    </div>
+                    <div>
+                        <h4>Egresos por Categoría</h4>
+                        <div class="table-container">
+                            ${expenseCategoriesTable}
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #f5f5f5; border-radius: 5px;">
+                    <h4>Recomendaciones Anuales</h4>
+                    <p>${annualBalance >= 0 ? 
+                        '✅ El fondo finalizó el año con balance positivo.' : 
+                        '⚠️ El fondo finalizó el año con balance negativo. Revisa los gastos para el próximo año.'}</p>
+                    <p>${annualTransactions.length >= 24 ? 
+                        '✅ Se registró una buena cantidad de transacciones durante el año.' : 
+                        'ℹ️ Considera mejorar el registro de transacciones para tener un mejor control.'}</p>
+                    <p><strong>Recomendación:</strong> Planifica el presupuesto del próximo año basándote en los datos de este año.</p>
+                </div>
+            `;
+        }
+        
+        // Generar reporte de ofrendas
+        function generateOfferingReport() {
+            // Filtrar solo ofrendas
+            const offerings = transactions.filter(t => 
+                t.type === 'income' && t.category === 'ofrenda'
+            );
+            
+            // Agrupar por mes
+            const offeringsByMonth = {};
+            
+            offerings.forEach(offering => {
+                const key = `${offering.year}-${offering.month}`;
+                if (!offeringsByMonth[key]) {
+                    offeringsByMonth[key] = {
+                        month: offering.month,
+                        year: offering.year,
+                        offerings: [],
+                        total: 0
+                    };
+                }
+                offeringsByMonth[key].offerings.push(offering);
+                offeringsByMonth[key].total += offering.amount;
+            });
+            
+            // Crear tabla resumen por mes
+            let summaryTable = '';
+            
+            if (Object.keys(offeringsByMonth).length > 0) {
+                summaryTable = '<table><thead><tr><th>Mes</th><th>Cantidad de Ofrendas</th><th>Total Recaudado</th><th>Promedio por Ofrenda</th></tr></thead><tbody>';
+                
+                Object.values(offeringsByMonth).forEach(monthData => {
+                    const monthName = new Date(monthData.year, monthData.month - 1, 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+                    const average = monthData.total / monthData.offerings.length;
+                    
+                    summaryTable += `
+                        <tr>
+                            <td>${monthName}</td>
+                            <td>${monthData.offerings.length}</td>
+                            <td>$${monthData.total.toFixed(2)}</td>
+                            <td>$${average.toFixed(2)}</td>
+                        </tr>
+                    `;
+                });
+                
+                summaryTable += '</tbody></table>';
+            } else {
+                summaryTable = '<p style="text-align:center; padding:20px; color:#666;">No hay ofrendas registradas.</p>';
+            }
+            
+            // Calcular totales generales
+            const totalOfferings = offerings.reduce((sum, t) => sum + t.amount, 0);
+            const averageOffering = offerings.length > 0 ? totalOfferings / offerings.length : 0;
+            
+            // Obtener mes con mayor y menor recaudación
+            let maxMonth = null;
+            let minMonth = null;
+            let maxAmount = 0;
+            let minAmount = Infinity;
+            
+            Object.values(offeringsByMonth).forEach(monthData => {
+                if (monthData.total > maxAmount) {
+                    maxAmount = monthData.total;
+                    maxMonth = new Date(monthData.year, monthData.month - 1, 1).toLocaleDateString('es-ES', { month: 'long' });
+                }
+                
+                if (monthData.total < minAmount) {
+                    minAmount = monthData.total;
+                    minMonth = new Date(monthData.year, monthData.month - 1, 1).toLocaleDateString('es-ES', { month: 'long' });
+                }
+            });
+            
+            return `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Total de Ofrendas Registradas:</strong> ${offerings.length}</p>
+                    <p><strong>Total Recaudado en Ofrendas:</strong> $${totalOfferings.toFixed(2)}</p>
+                    <p><strong>Promedio por Ofrenda:</strong> $${averageOffering.toFixed(2)}</p>
+                    <p><strong>Mes con Mayor Recaudación:</strong> ${maxMonth || 'N/A'} ($${maxAmount.toFixed(2)})</p>
+                    <p><strong>Mes con Menor Recaudación:</strong> ${minMonth || 'N/A'} ($${minAmount.toFixed(2)})</p>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 10px; color: var(--primary-color);">Resumen por Mes</h3>
+                <div class="table-container">
+                    ${summaryTable}
+                </div>
+            `;
+        }
+        
+        // Obtener nombre del trimestre
+        function getQuarterName(quarter) {
+            const quarterNames = {
+                1: 'Primer',
+                2: 'Segundo',
+                3: 'Tercer',
+                4: 'Cuarto'
+            };
+            return quarterNames[quarter] || quarter;
+        }
+        
+        // Imprimir reporte
+        function printReport() {
+            const reportContent = document.getElementById('reportDetails').innerHTML;
+            const reportTitle = document.getElementById('reportTitle').textContent;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>${reportTitle}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { color: #2E7D32; }
+                        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .positive { color: green; }
+                        .negative { color: red; }
+                    </style>
+                </head>
+                <body>
+                    <h1>${reportTitle}</h1>
+                    <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-ES')}</p>
+                    <hr>
+                    ${reportContent}
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // Exportar a Excel (simulado)
+        function exportToExcel() {
+            alert('Para exportar a Excel: 1) Imprime el reporte, 2) Selecciona "Guardar como PDF", 3) Convierte el PDF a Excel usando herramientas en línea. En una versión avanzada, esto se haría automáticamente.');
+        }
+        
+        // Respaldar datos
+        function backupData() {
+            const dataStr = JSON.stringify(transactions, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `respaldo_fondo_jovenes_${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showSuccessMessage('Datos respaldados exitosamente');
+        }
+        
+        // Iniciar nuevo mes
+        function startNewMonth() {
+            if (confirm('¿Estás seguro de que deseas iniciar un nuevo mes? Esto no eliminará los datos, solo te permitirá organizar mejor las transacciones.')) {
+                // Aquí podrías agregar funcionalidad para archivar el mes anterior
+                // Por ahora, simplemente mostramos un mensaje
+                showSuccessMessage('Listo para registrar las transacciones del nuevo mes. ¡Recuerda registrar todas las ofrendas !');
+            }
+        }
+        
+        // Mostrar mensaje de éxito
+        function showSuccessMessage(message) {
+            // Crear mensaje temporal
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--success-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: var(--shadow);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            messageDiv.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+            
+            document.body.appendChild(messageDiv);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+        }
+        
+        // Mostrar modal
+        function showModal(title, content) {
+            // Crear overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            `;
+            
+            // Crear modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                background-color: white;
+                border-radius: 10px;
+                max-width: 90%;
+                max-height: 90%;
+                overflow-y: auto;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            `;
+            
+            modal.innerHTML = `
+                <div style="padding: 20px; border-bottom: 1px solid var(--border-color);">
+                    <h2 style="color: var(--primary-color); margin: 0;">${title}</h2>
+                </div>
+                <div>${content}</div>
+                <div style="padding: 20px; text-align: right; border-top: 1px solid var(--border-color);">
+                    <button id="closeModalBtn" class="btn btn-primary">Cerrar</button>
+                </div>
+            `;
+            
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // Configurar botón de cerrar
+            document.getElementById('closeModalBtn').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+            });
+            
+            // Cerrar al hacer clic fuera del modal
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    document.body.removeChild(overlay);
+                }
+            });
+        }
+        
+        // Cerrar modal
+        function closeModal() {
+            const overlay = document.querySelector('div[style*="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5);"]');
+            if (overlay) {
+                document.body.removeChild(overlay);
+            }
+        }
+    </script>
+</body>
+</html>
