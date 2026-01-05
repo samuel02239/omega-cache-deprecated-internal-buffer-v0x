@@ -567,7 +567,7 @@
                     <i class="fas fa-church"></i>
                 </div>
                 <div class="stat-info">
-                    <h3>Ofrendas </h3>
+                    <h3>Ofrendas</h3>
                     <div class="stat-value positive" id="totalOffering">$0.00</div>
                 </div>
             </div>
@@ -610,7 +610,7 @@
                                     <label for="incomeType">Tipo de Ingreso</label>
                                     <select id="incomeType" required>
                                         <option value="">Seleccionar</option>
-                                        <option value="ofrenda">Ofrenda </option>
+                                        <option value="ofrenda">Ofrenda</option>
                                         <option value="donacion">Donación</option>
                                         <option value="aporte">Aporte comite</option>
                                         <option value="otro">Otro</option>
@@ -773,7 +773,7 @@
                 <div class="report-card" id="offeringReport">
                     <i class="fas fa-church"></i>
                     <h3>Reporte de Ofrendas</h3>
-                    <p>Detalle de ofrendas </p>
+                    <p>Detalle de ofrendas</p>
                 </div>
             </div>
             
@@ -827,8 +827,8 @@
             </div>
             
             <div style="margin-top: 20px; padding: 15px; background-color: #E8F5E9; border-radius: 10px;">
-                <h3 style="color: var(--primary-dark); margin-bottom: 10px;"><i class="fas fa-lightbulb"></i> Tip para Ofrendas </h3>
-                <p>Para registrar ofrendas : selecciona "Ingreso" → Tipo "Ofrenda Sabatina" → Fecha del sábado correspondiente → Monto recaudado → Responsable quien recolectó.</p>
+                <h3 style="color: var(--primary-dark); margin-bottom: 10px;"><i class="fas fa-lightbulb"></i> Tip para Ofrendas</h3>
+                <p>Para registrar ofrendas: selecciona "Ingreso" → Tipo "Ofrenda" → Fecha del sábado correspondiente → Monto recaudado → Responsable quien recolectó.</p>
             </div>
         </div>
         
@@ -1079,48 +1079,6 @@
             showSuccessMessage('Transacción eliminada y sincronizada');
         }
 
-        // Editar transacción (MODIFICADO PARA FIREBASE)
-        // En la función editTransaction, cuando se guardan los cambios:
-        // Reemplazar saveData() con:
-        // saveTransactionToFirebase(transactions[transactionIndex]);
-
-        // Actualizar esta sección en editTransaction:
-        if (transaction.type === 'income') {
-            document.getElementById('editIncomeForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const id = parseInt(document.getElementById('editTransactionId').value);
-                const date = document.getElementById('editIncomeDate').value;
-                const type = document.getElementById('editIncomeType').value;
-                const amount = parseFloat(document.getElementById('editIncomeAmount').value);
-                const description = document.getElementById('editIncomeDescription').value;
-                const responsible = document.getElementById('editIncomeResponsible').value;
-                
-                const transactionIndex = transactions.findIndex(t => t.id === id);
-                if (transactionIndex !== -1) {
-                    const transactionDate = new Date(date);
-                    transactions[transactionIndex] = {
-                        ...transactions[transactionIndex],
-                        date: date,
-                        amount: amount,
-                        description: description,
-                        category: type,
-                        responsible: responsible,
-                        month: transactionDate.getMonth() + 1,
-                        year: transactionDate.getFullYear(),
-                        updatedAt: new Date().toISOString(),
-                        updatedBy: currentUser
-                    };
-                    
-                    // Guardar en Firebase
-                    saveTransactionToFirebase(transactions[transactionIndex]);
-                    
-                    closeModal();
-                    showSuccessMessage('Transacción actualizada y sincronizada');
-                }
-            });
-        }
-
         // ================================
         // FUNCIONES AUXILIARES
         // ================================
@@ -1141,20 +1099,23 @@
             document.getElementById('expenseDate').value = currentDate;
         }
 
-        // Actualizar dashboard
+        // CORRECCIÓN 1: Actualizar dashboard (SEPARAR OFRENDAS DE INGRESOS)
         function updateDashboard() {
+            // Ingresos totales (EXCLUYENDO ofrendas)
             const totalIncome = transactions
-                .filter(t => t.type === 'income')
+                .filter(t => t.type === 'income' && t.category !== 'ofrenda')
                 .reduce((sum, t) => sum + t.amount, 0);
                 
             const totalExpense = transactions
                 .filter(t => t.type === 'expense')
                 .reduce((sum, t) => sum + t.amount, 0);
                 
+            // Saldo actual = Ingresos (sin ofrendas) - Egresos
             const currentBalance = totalIncome - totalExpense;
             
+            // Ofrendas totales (solo transacciones con category === 'ofrenda')
             const totalOffering = transactions
-                .filter(t => t.type === 'income' && t.category === 'ofrenda')
+                .filter(t => t.category === 'ofrenda')
                 .reduce((sum, t) => sum + t.amount, 0);
             
             document.getElementById('totalIncome').textContent = `$${totalIncome.toFixed(2)}`;
@@ -1238,41 +1199,150 @@
             }, 3000);
         }
 
-        // ================================
-        // NOTA: Las siguientes funciones permanecen igual
-        // updateTransactionsTable()
-        // getCategoryText()
-        // addTransactionButtonListeners()
-        // viewTransactionDetails()
-        // editTransaction() (excepto la parte de guardado)
-        // updateCharts()
-        // updateExpenseChart()
-        // updateBalanceChart()
-        // updateAlerts()
-        // loadMonthFilters()
-        // generateReport()
-        // generateMonthlyReport()
-        // generateQuarterlyReport()
-        // generateAnnualReport()
-        // generateOfferingReport()
-        // getQuarterName()
-        // printReport()
-        // exportToExcel()
-        // startNewMonth()
-        // showModal()
-        // closeModal()
-        // ================================
+        // CORRECCIÓN 2: FUNCIÓN ÚNICA PARA RENDERIZAR REPORTES
+        function renderReport(title, data) {
+            if (data.length === 0) {
+                document.getElementById('reportDetails').innerHTML = '<p>No hay datos para mostrar en este reporte.</p>';
+                return;
+            }
+            
+            let total = 0;
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <p><strong>Total de registros:</strong> ${data.length}</p>
+                </div>
+                <div class="table-container">
+                    <table class="report-table" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f5f5f5;">Fecha</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f5f5f5;">Tipo</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f5f5f5;">Categoría</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f5f5f5;">Descripción</th>
+                                <th style="padding: 10px; border: 1px solid #ddd; background-color: #f5f5f5;">Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            data.forEach(t => {
+                const typeText = t.type === 'income' ? 'Ingreso' : 'Egreso';
+                const categoryText = getCategoryText(t.category);
+                const dateObj = new Date(t.date);
+                const formattedDate = dateObj.toLocaleDateString('es-ES');
+                
+                total += t.amount;
+                
+                html += `
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${typeText}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${categoryText}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd;">${t.description}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd; font-weight: 600; color: ${t.type === 'income' ? 'var(--success-color)' : 'var(--danger-color)'}">
+                            ${t.type === 'income' ? '+' : '-'}$${t.amount.toFixed(2)}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" style="padding: 10px; border: 1px solid #ddd; text-align: right; font-weight: bold;">Total:</td>
+                                <td style="padding: 10px; border: 1px solid #ddd; font-weight: bold; color: ${total >= 0 ? 'var(--success-color)' : 'var(--danger-color)'}">
+                                    $${total.toFixed(2)}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            `;
+            
+            document.getElementById('reportDetails').innerHTML = html;
+        }
 
-        // (Aquí van todas las demás funciones sin cambios, excepto las que ya modificamos arriba)
-        // Solo asegúrate de que en editTransaction y deleteTransaction usen las funciones de Firebase
+        // CORRECCIÓN 2: FUNCIONES DE REPORTES ACTUALIZADAS (ÚNICAS)
+        function generateMonthlyReport() {
+            const now = new Date();
+            const month = now.getMonth() + 1;
+            const year = now.getFullYear();
 
-    </script>
+            const data = transactions.filter(t => t.month === month && t.year === year);
+            
+            const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                               "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            
+            document.getElementById('reportTitle').textContent = `Reporte Mensual - ${monthNames[month-1]} ${year}`;
+            renderReport(`Reporte Mensual - ${monthNames[month-1]} ${year}`, data);
+        }
 
-    <!-- Incluir el resto del código JavaScript original aquí -->
-    <!-- Solo copia todas las funciones desde "// Actualizar tabla de transacciones" hasta el final -->
-    <!-- Pero recuerda: en editTransaction y deleteTransaction debes usar las funciones de Firebase -->
+        function generateQuarterlyReport() {
+            const now = new Date();
+            const quarter = Math.floor(now.getMonth() / 3) + 1;
+            const year = now.getFullYear();
 
-    <script>
+            const data = transactions.filter(t => {
+                const q = Math.floor((t.month - 1) / 3) + 1;
+                return q === quarter && t.year === year;
+            });
+            
+            const quarterNames = {
+                1: "Primer Trimestre",
+                2: "Segundo Trimestre", 
+                3: "Tercer Trimestre",
+                4: "Cuarto Trimestre"
+            };
+            
+            document.getElementById('reportTitle').textContent = `Reporte Trimestral - ${quarterNames[quarter]} ${year}`;
+            renderReport(`Reporte Trimestral - ${quarterNames[quarter]} ${year}`, data);
+        }
+
+        function generateAnnualReport() {
+            const year = new Date().getFullYear();
+
+            const data = transactions.filter(t => t.year === year);
+            
+            document.getElementById('reportTitle').textContent = `Reporte Anual ${year}`;
+            renderReport(`Reporte Anual ${year}`, data);
+        }
+
+        function generateOfferingReport() {
+            const data = transactions.filter(t => t.category === 'ofrenda');
+            
+            document.getElementById('reportTitle').textContent = `Reporte de Ofrendas`;
+            renderReport(`Reporte de Ofrendas`, data);
+        }
+
+        // CORRECCIÓN 2: FUNCIÓN PRINCIPAL DE REPORTES
+        function generateReport(type) {
+            if (!transactions.length) {
+                alert('No hay transacciones registradas');
+                return;
+            }
+
+            document.getElementById('reportContent').style.display = 'block';
+
+            switch (type) {
+                case 'monthly':
+                    generateMonthlyReport();
+                    break;
+                case 'quarterly':
+                    generateQuarterlyReport();
+                    break;
+                case 'annual':
+                    generateAnnualReport();
+                    break;
+                case 'offering':
+                    generateOfferingReport();
+                    break;
+            }
+            
+            // Desplazar hacia la sección de reportes
+            document.getElementById('reportContent').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // ================================
         // CÓDIGO RESTANTE (CON MODIFICACIONES MENORES)
         // ================================
@@ -1374,7 +1444,7 @@
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = parseInt(this.getAttribute('data-id'));
-                    deleteTransaction(id); // Esta función ya está modificada para Firebase
+                    deleteTransaction(id);
                 });
             });
         }
@@ -1428,7 +1498,7 @@
             showModal('Detalles de Transacción', details);
         }
 
-        // Editar transacción (MODIFICADO - usar Firebase para guardar)
+        // Editar transacción
         function editTransaction(id) {
             const transaction = transactions.find(t => t.id === id);
             if (!transaction) return;
@@ -1447,7 +1517,6 @@
                             <select id="editIncomeType" required>
                                 <option value="ofrenda" ${transaction.category === 'ofrenda' ? 'selected' : ''}>Ofrenda</option>
                                 <option value="donacion" ${transaction.category === 'donacion' ? 'selected' : ''}>Donación</option>
-                                <option value="actividad" ${transaction.category === 'actividad' ? 'selected' : ''}>Actividad</option>
                                 <option value="aporte" ${transaction.category === 'aporte' ? 'selected' : ''}>Aporte Especial</option>
                                 <option value="otro" ${transaction.category === 'otro' ? 'selected' : ''}>Otro</option>
                             </select>
@@ -1533,7 +1602,7 @@
                             updatedBy: currentUser
                         };
                         
-                        // GUARDAR EN FIREBASE (CAMBIO CLAVE)
+                        // GUARDAR EN FIREBASE
                         saveTransactionToFirebase(transactions[transactionIndex]);
                         
                         closeModal();
@@ -1567,7 +1636,7 @@
                             updatedBy: currentUser
                         };
                         
-                        // GUARDAR EN FIREBASE (CAMBIO CLAVE)
+                        // GUARDAR EN FIREBASE
                         saveTransactionToFirebase(transactions[transactionIndex]);
                         
                         closeModal();
@@ -1648,7 +1717,7 @@
             });
         }
 
-        // Actualizar gráfico de balance mensual
+        // CORRECCIÓN 5: Actualizar gráfico de balance mensual (EXCLUIR OFRENDAS DE INGRESOS)
         function updateBalanceChart() {
             const ctx = document.getElementById('balanceChart').getContext('2d');
             
@@ -1666,8 +1735,9 @@
                 const monthName = date.toLocaleDateString('es-ES', { month: 'short' });
                 months.push(`${monthName} ${year}`);
                 
+                // CORRECCIÓN: Excluir ofrendas de los ingresos
                 const monthIncome = transactions
-                    .filter(t => t.type === 'income' && t.month === month && t.year === year)
+                    .filter(t => t.type === 'income' && t.category !== 'ofrenda' && t.month === month && t.year === year)
                     .reduce((sum, t) => sum + t.amount, 0);
                     
                 const monthExpense = transactions
@@ -1700,7 +1770,7 @@
                     labels: months,
                     datasets: [
                         {
-                            label: 'Ingresos',
+                            label: 'Ingresos (sin ofrendas)',
                             data: incomeData,
                             borderColor: '#4CAF50',
                             backgroundColor: 'rgba(76, 175, 80, 0.1)',
@@ -1732,7 +1802,7 @@
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Evolución Mensual'
+                            text: 'Evolución Mensual (Ingresos excluyen ofrendas)'
                         }
                     },
                     scales: {
@@ -1759,8 +1829,9 @@
                 return;
             }
             
+            // CORRECCIÓN: Calcular balance excluyendo ofrendas
             const totalIncome = transactions
-                .filter(t => t.type === 'income')
+                .filter(t => t.type === 'income' && t.category !== 'ofrenda')
                 .reduce((sum, t) => sum + t.amount, 0);
                 
             const totalExpense = transactions
@@ -1794,7 +1865,7 @@
             }
             
             const hasOfferingsThisMonth = transactions.some(t => 
-                t.type === 'income' && t.category === 'ofrenda' && 
+                t.category === 'ofrenda' && 
                 t.month === currentMonth && t.year === currentYear
             );
             
@@ -1865,72 +1936,6 @@
             if (currentSelection && currentSelection !== 'all') {
                 select.value = currentSelection;
             }
-        }
-
-        // Generar reportes (las funciones de reportes permanecen igual)
-        function generateReport(type) {
-            const reportContent = document.getElementById('reportContent');
-            const reportTitle = document.getElementById('reportTitle');
-            const reportDetails = document.getElementById('reportDetails');
-            
-            reportContent.style.display = 'block';
-            
-            let title = '';
-            let content = '';
-            
-            switch(type) {
-                case 'monthly':
-                    title = 'Reporte Mensual';
-                    content = generateMonthlyReport();
-                    break;
-                case 'quarterly':
-                    title = 'Reporte Trimestral';
-                    content = generateQuarterlyReport();
-                    break;
-                case 'annual':
-                    title = 'Reporte Anual';
-                    content = generateAnnualReport();
-                    break;
-                case 'offering':
-                    title = 'Reporte de Ofrendas';
-                    content = generateOfferingReport();
-                    break;
-            }
-            
-            reportTitle.textContent = title;
-            reportDetails.innerHTML = content;
-            
-            reportContent.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function generateMonthlyReport() {
-            // Mantener esta función igual
-            // ... (código original)
-        }
-
-        function generateQuarterlyReport() {
-            // Mantener esta función igual
-            // ... (código original)
-        }
-
-        function generateAnnualReport() {
-            // Mantener esta función igual
-            // ... (código original)
-        }
-
-        function generateOfferingReport() {
-            // Mantener esta función igual
-            // ... (código original)
-        }
-
-        function getQuarterName(quarter) {
-            const quarterNames = {
-                1: 'Primer',
-                2: 'Segundo',
-                3: 'Tercer',
-                4: 'Cuarto'
-            };
-            return quarterNames[quarter] || quarter;
         }
 
         function printReport() {
