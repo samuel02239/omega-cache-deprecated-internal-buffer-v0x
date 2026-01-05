@@ -728,95 +728,161 @@
             </button>
         </div>
 
-        <!-- Pestaña de Registro -->
-        <div class="tab-content active" id="registro">
-            <div class="form-container">
-                <h2><i class="fas fa-user-plus"></i> Registrar Nuevo Abono</h2>
-                <form id="paymentForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="fullName">Nombre Completo *</label>
-                            <input type="text" id="fullName" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Teléfono *</label>
-                            <input type="tel" id="phone" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="idNumber">Cédula *</label>
-                            <input type="text" id="idNumber" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Género *</label>
-                            <select id="gender" class="form-control" required>
-                                <option value="">Seleccionar</option>
-                                <option value="male">Masculino</option>
-                                <option value="female">Femenino</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="location">Lugar *</label>
-                            <select id="location" class="form-control" required>
-                                <option value="">Seleccionar</option>
-                                <option value="IPUC Vista Hermosa">IPUC Vista Hermosa</option>
-                                <option value="IPUC Milagro">IPUC Milagro</option>
-                                <option value="IPUC Ciudad Jardín">IPUC Ciudad Jardín</option>
-                                <option value="IPUC El Retiro">IPUC El Retiro</option>
-                                <option value="IPUC La Floresta">IPUC La Floresta</option>
-                                <option value="otro">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="otherLocationGroup" style="display: none;">
-                            <label for="otherLocation">Especificar Lugar</label>
-                            <input type="text" id="otherLocation" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentMethod">Método de Pago *</label>
-                            <select id="paymentMethod" class="form-control" required>
-                                <option value="">Seleccionar</option>
-                                <option value="Nequi">Nequi</option>
-                                <option value="Efectivo">Efectivo</option>
-                                <option value="Transferencia">Transferencia Bancaria</option>
-                                <option value="Daviplata">Daviplata</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="amount">Monto Abonado *</label>
-                            <input type="number" id="amount" class="form-control" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="totalAmount">Monto Total *</label>
-                            <input type="number" id="totalAmount" class="form-control" min="0" value="270000" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="paymentDate">Fecha de Pago *</label>
-                            <input type="date" id="paymentDate" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="form-buttons">
-                        <button type="button" class="btn btn-secondary" id="clearForm">
-                            <i class="fas fa-times"></i> Limpiar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar Registro
-                        </button>
-                    </div>
-                </form>
+<!-- Pestaña de Registro -->
+<div class="tab-content active" id="registro">
+    <div class="form-container">
+        <h2><i class="fas fa-user-plus"></i> Registrar Nuevo Abono</h2>
+        <form id="paymentForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fullName">Nombre Completo *</label>
+                    <input type="text" id="fullName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Teléfono *</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
             </div>
-        </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="gender">Género *</label>
+                    <select id="gender" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="male">Masculino</option>
+                        <option value="female">Femenino</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="isMinor">¿Es menor de edad? *</label>
+                    <select id="isMinor" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="yes">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+            </div>
 
+            <!-- Campos para MENORES DE EDAD (ocultos inicialmente) -->
+            <div id="minorFields" style="display: none;">
+                <!-- Documento del menor -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minorDocType">Tipo de Documento *</label>
+                        <select id="minorDocType" class="form-control">
+                            <option value="">Seleccionar</option>
+                            <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                            <option value="Registro Civil">Registro Civil</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="minorDocNumber">Número de Documento *</label>
+                        <input type="text" id="minorDocNumber" class="form-control">
+                    </div>
+                </div>
+                
+                <!-- Datos del acudiente -->
+                <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Datos del acudiente</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianName">Nombre completo del acudiente *</label>
+                        <input type="text" id="guardianName" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianId">Cédula del acudiente *</label>
+                        <input type="text" id="guardianId" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianPhone">Teléfono del acudiente *</label>
+                        <input type="tel" id="guardianPhone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="guardianRelationship">Parentesco *</label>
+                        <input type="text" id="guardianRelationship" class="form-control" placeholder="Padre, madre, tutor, etc.">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campos para MAYORES DE EDAD (ocultos inicialmente) -->
+            <div id="adultFields" style="display: none;">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="idNumber">Cédula de ciudadanía *</label>
+                        <input type="text" id="idNumber" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="expeditionDate">Fecha de expedición de la cédula *</label>
+                        <input type="date" id="expeditionDate" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campo EPS (siempre visible) -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="eps">EPS *</label>
+                    <input type="text" id="eps" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">Lugar *</label>
+                    <select id="location" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="IPUC Vista Hermosa">IPUC Vista Hermosa</option>
+                        <option value="IPUC Milagro">IPUC Milagro</option>
+                        <option value="IPUC Ciudad Jardín">IPUC Ciudad Jardín</option>
+                        <option value="IPUC El Retiro">IPUC El Retiro</option>
+                        <option value="IPUC La Floresta">IPUC La Floresta</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group" id="otherLocationGroup" style="display: none;">
+                    <label for="otherLocation">Especificar Lugar</label>
+                    <input type="text" id="otherLocation" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Método de Pago *</label>
+                    <select id="paymentMethod" class="form-control" required>
+                        <option value="">Seleccionar</option>
+                        <option value="EFECTIVO">EFECTIVO</option>
+                        <option value="TRANSFERENCIA BANCARIA">TRANSFERENCIA BANCARIA</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="amount">Monto Abonado *</label>
+                    <input type="number" id="amount" class="form-control" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="totalAmount">Monto Total *</label>
+                    <input type="number" id="totalAmount" class="form-control" min="0" value="270000" required>
+                </div>
+                <div class="form-group">
+                    <label for="paymentDate">Fecha de Pago *</label>
+                    <input type="date" id="paymentDate" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-buttons">
+                <button type="button" class="btn btn-secondary" id="clearForm">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar Registro
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
         <!-- Pestaña de Inscritos -->
         <div class="tab-content" id="inscritos">
             <div class="filters">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="searchInscritos" placeholder="Buscar por nombre, cédula o teléfono...">
+                    <input type="text" id="searchInscritos" placeholder="Buscar por nombre, documento, teléfono o EPS...">
                 </div>
                 <select class="filter-select" id="filterLocation">
                     <option value="">Todos los lugares</option>
@@ -833,6 +899,11 @@
                     <option value="completed">Completo</option>
                     <option value="cancelled">Cancelado</option>
                 </select>
+                <select class="filter-select" id="filterAgeType">
+                    <option value="">Todos los tipos</option>
+                    <option value="minor">Menor</option>
+                    <option value="adult">Adulto</option>
+                </select>
             </div>
 
             <div class="excel-table-container">
@@ -842,15 +913,18 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Teléfono</th>
-                                <th>Cédula</th>
+                                <th>Documento</th>
+                                <th>Tipo</th>
                                 <th>Género</th>
+                                <th>EPS</th>
+                                <th>Acudiente</th>
                                 <th>Lugar</th>
                                 <th>Método Pago</th>
                                 <th>Abono</th>
                                 <th>Total</th>
                                 <th>Saldo</th>
                                 <th>Estado</th>
-                                <th>Fecha</th>
+                                <th>Fecha Pago</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -861,7 +935,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Pestaña de Contabilidad -->
         <div class="tab-content" id="contabilidad">
             <div class="stats-container">
@@ -949,6 +1022,8 @@
     </div>
 
     <!-- Firebase Configuration -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
     <script>
         // Firebase Configuration
         const firebaseConfig = {
@@ -968,822 +1043,1076 @@
     </script>
 
     <script>
-        // Variables globales
-        let payments = [];
-        let editPaymentId = null;
-        let filteredPayments = [];
-        let isInitialLoad = true;
+    // Variables globales
+    let payments = [];
+    let editPaymentId = null;
+    let filteredPayments = [];
+    let isInitialLoad = true;
 
-        // Inicializar la aplicación
-        document.addEventListener('DOMContentLoaded', function() {
-            initApp();
-            
-            // ESCUCHAR CAMBIOS EN TIEMPO REAL DE FIREBASE
-            database.ref("payments").on("value", snapshot => {
-                const data = snapshot.val();
-                payments = data ? Object.values(data) : [];
-                
-                // Actualizar todas las interfaces
-                loadPaymentsTable();
-                updateStats();
-                loadLocationsInFilters();
-                updateAccountingTable();
-                
-                // Mostrar notificación solo si no es la carga inicial
-                if (!isInitialLoad) {
-                    showNotification("Datos actualizados en tiempo real", "info");
-                }
-                isInitialLoad = false;
-            });
-            
-            // Establecer fecha de hoy por defecto en el formulario
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('paymentDate').value = today;
-        });
-
-        // Inicializar eventos
-        function initApp() {
-            // Toggle tema claro/oscuro
-            document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-            
-            // Navegación entre pestañas
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    const tabId = this.getAttribute('data-tab');
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    document.getElementById(tabId).classList.add('active');
-                    
-                    // Si es la pestaña de inscritos, recalcular el alto
-                    if (tabId === 'inscritos') {
-                        setTimeout(adjustTableHeight, 100);
-                    }
-                });
-            });
-            
-            // Formulario de registro
-            document.getElementById('paymentForm').addEventListener('submit', savePayment);
-            document.getElementById('clearForm').addEventListener('click', clearForm);
-            
-            // Campo de lugar "Otro"
-            document.getElementById('location').addEventListener('change', function() {
-                const otherGroup = document.getElementById('otherLocationGroup');
-                otherGroup.style.display = this.value === 'otro' ? 'block' : 'none';
-            });
-            
-            // Filtros de inscritos
-            document.getElementById('searchInscritos').addEventListener('input', filterInscritos);
-            document.getElementById('filterLocation').addEventListener('change', filterInscritos);
-            document.getElementById('filterGender').addEventListener('change', filterInscritos);
-            document.getElementById('filterStatus').addEventListener('change', filterInscritos);
-            
-            // Filtros de contabilidad
-            document.getElementById('applyAccountingFilters').addEventListener('click', updateAccountingTable);
-            document.getElementById('clearAccountingFilters').addEventListener('click', clearAccountingFilters);
-            
-            // Exportar
-            document.getElementById('exportBtn').addEventListener('click', exportData);
-            
-            // Cargar lugares en filtros
-            loadLocationsInFilters();
-            
-            // Ajustar altura de la tabla al cargar
-            setTimeout(adjustTableHeight, 300);
-        }
+    // Inicializar la aplicación
+    document.addEventListener('DOMContentLoaded', function() {
+        initApp();
         
-        // Ajustar altura de la tabla de inscritos
-        function adjustTableHeight() {
-            const inscritosTab = document.getElementById('inscritos');
-            if (inscritosTab.classList.contains('active')) {
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const navTabsHeight = document.querySelector('.nav-tabs').offsetHeight;
-                const filtersHeight = document.querySelector('#inscritos .filters').offsetHeight;
-                const windowHeight = window.innerHeight;
-                
-                const calculatedHeight = windowHeight - headerHeight - navTabsHeight - filtersHeight - 100;
-                inscritosTab.style.height = calculatedHeight + 'px';
-            }
-        }
-
-        // Guardar pago en Firebase
-        function savePayment(e) {
-            e.preventDefault();
+        // ESCUCHAR CAMBIOS EN TIEMPO REAL DE FIREBASE
+        database.ref("payments").on("value", snapshot => {
+            const data = snapshot.val();
+            payments = data ? Object.values(data) : [];
             
-            // Validar formulario
-            const fullName = document.getElementById('fullName').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const idNumber = document.getElementById('idNumber').value.trim();
-            const gender = document.getElementById('gender').value;
-            let location = document.getElementById('location').value;
-            const paymentMethod = document.getElementById('paymentMethod').value;
-            const amount = parseFloat(document.getElementById('amount').value) || 0;
-            const totalAmount = parseFloat(document.getElementById('totalAmount').value) || 0;
-            const paymentDate = document.getElementById('paymentDate').value;
-            
-            if (location === 'otro') {
-                location = document.getElementById('otherLocation').value.trim();
-                if (!location) {
-                    showNotification('Por favor especifique el lugar', 'warning');
-                    return;
-                }
-            }
-            
-            if (!fullName || !phone || !idNumber || !gender || !location || !paymentMethod || !paymentDate) {
-                showNotification('Por favor complete todos los campos obligatorios (*)', 'warning');
-                return;
-            }
-            
-            if (amount > totalAmount) {
-                showNotification('El monto abonado no puede ser mayor al monto total', 'warning');
-                return;
-            }
-            
-            // Calcular estado
-            let status = 'pending';
-            if (amount === 0) {
-                status = 'pending';
-            } else if (amount > 0 && amount < totalAmount) {
-                status = 'partial';
-            } else if (amount >= totalAmount) {
-                status = 'completed';
-            }
-            
-            // Verificar si ya existe una persona con la misma cédula (solo para nuevos registros)
-            if (editPaymentId === null && payments.some(p => p.idNumber === idNumber && p.id !== editPaymentId)) {
-                showNotification('Ya existe una persona registrada con esta cédula', 'warning');
-                return;
-            }
-            
-            // Crear objeto de pago
-            const payment = {
-                id: editPaymentId ? editPaymentId : generateId(),
-                fullName,
-                phone,
-                idNumber,
-                gender,
-                location,
-                paymentMethod,
-                amount,
-                totalAmount,
-                status,
-                paymentDate: paymentDate,
-                registeredAt: new Date().toISOString(),
-                lastModified: new Date().toISOString(),
-                modifiedBy: getCurrentUser() || 'Usuario'
-            };
-            
-            // Guardar en Firebase
-            savePaymentToFirebase(payment);
-            
-            // Limpiar formulario
-            clearForm();
-            
-            // Mostrar mensaje de confirmación
-            showNotification(editPaymentId ? 'Registro actualizado correctamente' : 'Registro guardado correctamente', 'success');
-            editPaymentId = null;
-        }
-
-        // Función para guardar en Firebase
-        function savePaymentToFirebase(payment) {
-            database.ref("payments/" + payment.id).set(payment)
-                .then(() => {
-                    console.log("Datos guardados en Firebase correctamente");
-                })
-                .catch(error => {
-                    console.error("Error al guardar en Firebase:", error);
-                    showNotification('Error al guardar en la base de datos', 'error');
-                });
-        }
-
-        // Limpiar formulario
-        function clearForm() {
-            document.getElementById('paymentForm').reset();
-            document.getElementById('otherLocationGroup').style.display = 'none';
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('paymentDate').value = today;
-            document.getElementById('totalAmount').value = 270000; // Valor por defecto
-            editPaymentId = null;
-        }
-
-        // Cargar tabla de pagos
-        function loadPaymentsTable() {
-            const tbody = document.getElementById('inscritosTable');
-            
-            if (payments.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="12" class="no-data">
-                            <div style="font-size: 18px; margin-bottom: 10px;">
-                                <i class="fas fa-users-slash fa-2x"></i>
-                            </div>
-                            <p style="font-size: 16px;">No hay registros de abonos</p>
-                            <p style="font-size: 14px; margin-top: 10px;">¡Registra el primer abono en la pestaña "Registrar Abono"!</p>
-                        </td>
-                    </tr>
-                `;
-                document.getElementById('inscritosCount').textContent = '0';
-                return;
-            }
-            
-            // Ordenar por fecha de registro (más reciente primero)
-            const sortedPayments = [...payments].sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
-            
-            // Limpiar tabla
-            tbody.innerHTML = '';
-            
-            sortedPayments.forEach(payment => {
-                const row = document.createElement('tr');
-                row.id = `row-${payment.id}`;
-                const balance = payment.totalAmount - payment.amount;
-                const statusText = getStatusText(payment.status);
-                const statusClass = `status-${payment.status}`;
-                
-                row.innerHTML = `
-                    <td><strong>${payment.fullName}</strong></td>
-                    <td>${payment.phone}</td>
-                    <td>${payment.idNumber}</td>
-                    <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
-                    <td>${payment.location}</td>
-                    <td>
-                        <div class="payment-method">
-                            <i class="fas ${getPaymentMethodIcon(payment.paymentMethod)}"></i>
-                            ${payment.paymentMethod}
-                        </div>
-                    </td>
-                    <td><strong style="color: ${payment.amount > 0 ? 'var(--primary-color)' : 'var(--warning-color)'}">$${formatCurrency(payment.amount)}</strong></td>
-                    <td>$${formatCurrency(payment.totalAmount)}</td>
-                    <td><strong style="color: ${balance > 0 ? 'var(--warning-color)' : 'var(--success-color)'}">$${formatCurrency(balance)}</strong></td>
-                    <td>
-                        <div class="payment-status ${statusClass}" data-id="${payment.id}">
-                            ${statusText}
-                        </div>
-                    </td>
-                    <td>${formatDate(payment.paymentDate)}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn edit-btn edit-payment" data-id="${payment.id}" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn delete-btn delete-payment" data-id="${payment.id}" title="Eliminar">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            document.getElementById('inscritosCount').textContent = payments.length;
-            
-            // Agregar eventos a los botones de editar/eliminar
-            document.querySelectorAll('.edit-payment').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    editPayment(paymentId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-payment').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    deletePayment(paymentId);
-                });
-            });
-            
-            // Agregar eventos a los estados de abono
-            document.querySelectorAll('.payment-status').forEach(status => {
-                status.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    changePaymentStatus(paymentId, this);
-                });
-            });
-        }
-
-        // Cambiar estado de abono
-        function changePaymentStatus(paymentId, statusElement) {
-            const payment = payments.find(p => p.id === paymentId);
-            if (!payment) return;
-            
-            // Crear select para cambiar estado
-            const select = document.createElement('select');
-            select.className = 'status-select';
-            select.innerHTML = `
-                <option value="pending" ${payment.status === 'pending' ? 'selected' : ''}>Pendiente</option>
-                <option value="partial" ${payment.status === 'partial' ? 'selected' : ''}>Abonado</option>
-                <option value="completed" ${payment.status === 'completed' ? 'selected' : ''}>Completo</option>
-                <option value="cancelled" ${payment.status === 'cancelled' ? 'selected' : ''}>Cancelado</option>
-            `;
-            
-            // Guardar referencia al elemento original
-            const originalStatus = payment.status;
-            const originalText = statusElement.textContent;
-            const originalClass = statusElement.className;
-            
-            // Reemplazar el estado con el select
-            statusElement.replaceWith(select);
-            
-            // Enfocar el select
-            select.focus();
-            
-            // Guardar cuando cambie el valor
-            select.addEventListener('change', function() {
-                const newStatus = this.value;
-                payment.status = newStatus;
-                payment.lastModified = new Date().toISOString();
-                payment.modifiedBy = getCurrentUser() || 'Usuario';
-                
-                // Guardar cambios en Firebase
-                savePaymentToFirebase(payment);
-            });
-            
-            // Si se hace clic fuera, cancelar
-            select.addEventListener('blur', function() {
-                setTimeout(() => {
-                    if (document.activeElement !== select) {
-                        // Restaurar el estado original
-                        const newStatusElement = document.createElement('div');
-                        newStatusElement.className = originalClass;
-                        newStatusElement.textContent = originalText;
-                        newStatusElement.setAttribute('data-id', paymentId);
-                        
-                        this.replaceWith(newStatusElement);
-                        
-                        // Volver a agregar el evento
-                        newStatusElement.addEventListener('click', function() {
-                            changePaymentStatus(paymentId, this);
-                        });
-                    }
-                }, 200);
-            });
-        }
-
-        // Obtener texto del estado
-        function getStatusText(status) {
-            switch(status) {
-                case 'pending': return 'Pendiente';
-                case 'partial': return 'Abonado';
-                case 'completed': return 'Completo';
-                case 'cancelled': return 'Cancelado';
-                default: return 'Pendiente';
-            }
-        }
-
-        // Editar pago
-        function editPayment(paymentId) {
-            const payment = payments.find(p => p.id === paymentId);
-            if (!payment) return;
-            
-            editPaymentId = paymentId;
-            
-            // Llenar formulario con datos del pago
-            document.getElementById('fullName').value = payment.fullName;
-            document.getElementById('phone').value = payment.phone;
-            document.getElementById('idNumber').value = payment.idNumber;
-            document.getElementById('gender').value = payment.gender;
-            
-            // Verificar si el lugar está en las opciones
-            const locationSelect = document.getElementById('location');
-            const optionExists = Array.from(locationSelect.options).some(option => option.value === payment.location);
-            
-            if (optionExists) {
-                document.getElementById('location').value = payment.location;
-                document.getElementById('otherLocationGroup').style.display = 'none';
-            } else {
-                document.getElementById('location').value = 'otro';
-                document.getElementById('otherLocationGroup').style.display = 'block';
-                document.getElementById('otherLocation').value = payment.location;
-            }
-            
-            document.getElementById('paymentMethod').value = payment.paymentMethod;
-            document.getElementById('amount').value = payment.amount;
-            document.getElementById('totalAmount').value = payment.totalAmount;
-            document.getElementById('paymentDate').value = payment.paymentDate;
-            
-            // Cambiar a la pestaña de registro
-            document.querySelector('.nav-tab[data-tab="registro"]').click();
-            
-            // Desplazar hacia el formulario
-            document.getElementById('fullName').focus();
-            
-            // Mostrar mensaje
-            showNotification('Modifica los datos y haz clic en "Guardar Registro" para actualizar', 'info');
-        }
-
-        // Eliminar pago
-        function deletePayment(paymentId) {
-            if (!confirm('¿Está seguro de eliminar este registro de abono?')) return;
-            
-            // Eliminar de Firebase
-            database.ref("payments/" + paymentId).remove()
-                .then(() => {
-                    showNotification('Registro eliminado correctamente', 'success');
-                })
-                .catch(error => {
-                    console.error("Error al eliminar de Firebase:", error);
-                    showNotification('Error al eliminar el registro', 'error');
-                });
-        }
-
-        // Filtrar inscritos
-        function filterInscritos() {
-            const searchTerm = document.getElementById('searchInscritos').value.toLowerCase();
-            const locationFilter = document.getElementById('filterLocation').value;
-            const genderFilter = document.getElementById('filterGender').value;
-            const statusFilter = document.getElementById('filterStatus').value;
-            
-            filteredPayments = payments.filter(payment => {
-                // Filtrar por búsqueda
-                if (searchTerm && 
-                    !payment.fullName.toLowerCase().includes(searchTerm) && 
-                    !payment.idNumber.toLowerCase().includes(searchTerm) &&
-                    !payment.phone.toLowerCase().includes(searchTerm)) {
-                    return false;
-                }
-                
-                // Filtrar por lugar
-                if (locationFilter && payment.location !== locationFilter) {
-                    return false;
-                }
-                
-                // Filtrar por género
-                if (genderFilter && payment.gender !== genderFilter) {
-                    return false;
-                }
-                
-                // Filtrar por estado
-                if (statusFilter && payment.status !== statusFilter) {
-                    return false;
-                }
-                
-                return true;
-            });
-            
-            // Actualizar tabla con resultados filtrados
-            const tbody = document.getElementById('inscritosTable');
-            
-            if (filteredPayments.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="12" class="no-data">
-                            <div style="font-size: 18px; margin-bottom: 10px;">
-                                <i class="fas fa-search fa-2x"></i>
-                            </div>
-                            <p style="font-size: 16px;">No se encontraron registros con los filtros aplicados</p>
-                            <p style="font-size: 14px; margin-top: 10px;">Intenta con otros criterios de búsqueda</p>
-                        </td>
-                    </tr>
-                `;
-                document.getElementById('inscritosCount').textContent = filteredPayments.length;
-                return;
-            }
-            
-            // Limpiar tabla
-            tbody.innerHTML = '';
-            
-            filteredPayments.forEach(payment => {
-                const row = document.createElement('tr');
-                row.id = `row-${payment.id}`;
-                const balance = payment.totalAmount - payment.amount;
-                const statusText = getStatusText(payment.status);
-                const statusClass = `status-${payment.status}`;
-                
-                row.innerHTML = `
-                    <td><strong>${payment.fullName}</strong></td>
-                    <td>${payment.phone}</td>
-                    <td>${payment.idNumber}</td>
-                    <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
-                    <td>${payment.location}</td>
-                    <td>
-                        <div class="payment-method">
-                            <i class="fas ${getPaymentMethodIcon(payment.paymentMethod)}"></i>
-                            ${payment.paymentMethod}
-                        </div>
-                    </td>
-                    <td><strong style="color: ${payment.amount > 0 ? 'var(--primary-color)' : 'var(--warning-color)'}">$${formatCurrency(payment.amount)}</strong></td>
-                    <td>$${formatCurrency(payment.totalAmount)}</td>
-                    <td><strong style="color: ${balance > 0 ? 'var(--warning-color)' : 'var(--success-color)'}">$${formatCurrency(balance)}</strong></td>
-                    <td>
-                        <div class="payment-status ${statusClass}" data-id="${payment.id}">
-                            ${statusText}
-                        </div>
-                    </td>
-                    <td>${formatDate(payment.paymentDate)}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="action-btn edit-btn edit-payment" data-id="${payment.id}" title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn delete-btn delete-payment" data-id="${payment.id}" title="Eliminar">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            // Actualizar contador
-            document.getElementById('inscritosCount').textContent = filteredPayments.length;
-            
-            // Agregar eventos a los botones de editar/eliminar
-            document.querySelectorAll('.edit-payment').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    editPayment(paymentId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-payment').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    deletePayment(paymentId);
-                });
-            });
-            
-            // Agregar eventos a los estados de abono
-            document.querySelectorAll('.payment-status').forEach(status => {
-                status.addEventListener('click', function() {
-                    const paymentId = this.getAttribute('data-id');
-                    changePaymentStatus(paymentId, this);
-                });
-            });
-        }
-
-        // Cargar lugares en filtros
-        function loadLocationsInFilters() {
-            const locationFilter = document.getElementById('filterLocation');
-            const accountingLocation = document.getElementById('accountingLocation');
-            
-            // Obtener lugares únicos
-            const uniqueLocations = [...new Set(payments.map(p => p.location))].sort();
-            
-            // Limpiar opciones excepto la primera
-            while (locationFilter.options.length > 1) {
-                locationFilter.remove(1);
-            }
-            
-            while (accountingLocation.options.length > 1) {
-                accountingLocation.remove(1);
-            }
-            
-            // Agregar lugares
-            uniqueLocations.forEach(location => {
-                const option1 = document.createElement('option');
-                option1.value = location;
-                option1.textContent = location;
-                locationFilter.appendChild(option1);
-                
-                const option2 = document.createElement('option');
-                option2.value = location;
-                option2.textContent = location;
-                accountingLocation.appendChild(option2);
-            });
-        }
-
-        // Actualizar estadísticas
-        function updateStats() {
-            const totalCollected = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
-            const totalPeople = payments.length;
-            const avgPayment = totalPeople > 0 ? totalCollected / totalPeople : 0;
-            const uniqueLocations = [...new Set(payments.map(p => p.location))].length;
-            
-            document.getElementById('totalCollected').textContent = `$${formatCurrency(totalCollected)}`;
-            document.getElementById('totalPeople').textContent = totalPeople;
-            document.getElementById('avgPayment').textContent = `$${formatCurrency(avgPayment)}`;
-            document.getElementById('totalLocations').textContent = uniqueLocations;
-        }
-
-        // Actualizar tabla de contabilidad
-        function updateAccountingTable() {
-            const locationFilter = document.getElementById('accountingLocation').value;
-            const methodFilter = document.getElementById('accountingMethod').value;
-            const dateFilter = document.getElementById('accountingDate').value;
-            
-            // Filtrar pagos
-            let filtered = [...payments];
-            
-            if (locationFilter) {
-                filtered = filtered.filter(p => p.location === locationFilter);
-            }
-            
-            if (methodFilter) {
-                filtered = filtered.filter(p => p.paymentMethod === methodFilter);
-            }
-            
-            if (dateFilter) {
-                filtered = filtered.filter(p => p.paymentDate && p.paymentDate.startsWith(dateFilter));
-            }
-            
-            // Calcular total por método de pago
-            const methods = ['Nequi', 'Efectivo', 'Transferencia', 'Daviplata'];
-            const methodData = {};
-            let totalGeneral = 0;
-            
-            methods.forEach(method => {
-                const methodPayments = filtered.filter(p => p.paymentMethod === method);
-                const total = methodPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
-                methodData[method] = {
-                    count: methodPayments.length,
-                    total: total
-                };
-                totalGeneral += total;
-            });
-            
-            // Actualizar tabla
-            const tbody = document.getElementById('accountingTable');
-            tbody.innerHTML = '';
-            
-            methods.forEach(method => {
-                const data = methodData[method];
-                const percentage = totalGeneral > 0 ? (data.total / totalGeneral * 100).toFixed(1) : 0;
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${method}</td>
-                    <td>${data.count}</td>
-                    <td><strong>$${formatCurrency(data.total)}</strong></td>
-                    <td>${percentage}%</td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            // Agregar fila de total
-            const totalRow = document.createElement('tr');
-            totalRow.style.backgroundColor = 'rgba(46, 139, 87, 0.1)';
-            totalRow.style.fontWeight = 'bold';
-            totalRow.innerHTML = `
-                <td>TOTAL</td>
-                <td>${filtered.length}</td>
-                <td>$${formatCurrency(totalGeneral)}</td>
-                <td>100%</td>
-            `;
-            tbody.appendChild(totalRow);
-        }
-
-        // Limpiar filtros de contabilidad
-        function clearAccountingFilters() {
-            document.getElementById('accountingLocation').value = '';
-            document.getElementById('accountingMethod').value = '';
-            document.getElementById('accountingDate').value = '';
+            // Actualizar todas las interfaces
+            loadPaymentsTable();
+            updateStats();
+            loadLocationsInFilters();
             updateAccountingTable();
-        }
-
-        // Funciones auxiliares
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).substr(2);
-        }
-
-        function getPaymentMethodIcon(method) {
-            switch(method) {
-                case 'Nequi': return 'fa-mobile-alt';
-                case 'Efectivo': return 'fa-money-bill-wave';
-                case 'Transferencia': return 'fa-university';
-                case 'Daviplata': return 'fa-wallet';
-                default: return 'fa-money-check';
+            
+            // Mostrar notificación solo si no es la carga inicial
+            if (!isInitialLoad) {
+                showNotification("Datos actualizados en tiempo real", "info");
             }
-        }
+            isInitialLoad = false;
+        });
+        
+        // Establecer fecha de hoy por defecto en el formulario
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('paymentDate').value = today;
+    });
 
-        function formatDate(dateString) {
-            try {
-                if (!dateString) return 'Sin fecha';
-                const date = new Date(dateString);
-                return date.toLocaleDateString('es-ES', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
+    // Inicializar eventos
+    function initApp() {
+        // Toggle tema claro/oscuro
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+        
+        // Navegación entre pestañas
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                const tabId = this.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
                 });
-            } catch (e) {
-                return dateString;
-            }
-        }
-
-        function formatCurrency(amount) {
-            return parseFloat(amount || 0).toLocaleString('es-ES', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
+                document.getElementById(tabId).classList.add('active');
+                
+                // Si es la pestaña de inscritos, recalcular el alto
+                if (tabId === 'inscritos') {
+                    setTimeout(adjustTableHeight, 100);
+                }
             });
-        }
-
-        // Obtener usuario actual (simplificado)
-        function getCurrentUser() {
-            // En una implementación real, esto vendría de Firebase Auth
-            // Por ahora, usamos una cookie o localStorage
-            let user = localStorage.getItem('campamento_user');
-            if (!user) {
-                user = prompt('Por favor, ingresa tu nombre para identificar tus cambios:', 'Usuario');
-                if (user) {
-                    localStorage.setItem('campamento_user', user);
-                } else {
-                    user = 'Usuario';
-                }
-            }
-            return user;
-        }
-
-        // Mostrar notificación
-        function showNotification(message, type = 'info') {
-            // Crear elemento de notificación
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 15px 20px;
-                border-radius: var(--border-radius);
-                background-color: ${type === 'success' ? 'var(--success-color)' : 
-                                type === 'warning' ? 'var(--warning-color)' : 
-                                type === 'error' ? 'var(--danger-color)' : 
-                                'var(--info-color)'};
-                color: white;
-                font-weight: 600;
-                z-index: 1000;
-                box-shadow: var(--shadow);
-                animation: slideIn 0.3s ease;
-                max-width: 300px;
-            `;
-            
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            // Remover después de 3 segundos
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
-            }, 3000);
-            
-            // Agregar estilos de animación si no existen
-            if (!document.getElementById('notification-styles')) {
-                const style = document.createElement('style');
-                style.id = 'notification-styles';
-                style.textContent = `
-                    @keyframes slideIn {
-                        from { transform: translateX(100%); opacity: 0; }
-                        to { transform: translateX(0); opacity: 1; }
-                    }
-                    @keyframes slideOut {
-                        from { transform: translateX(0); opacity: 1; }
-                        to { transform: translateX(100%); opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
-        }
-
-        // Alternar tema claro/oscuro
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            localStorage.setItem('campamento_theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        }
-
-        // Cargar tema guardado
-        function loadTheme() {
-            const savedTheme = localStorage.getItem('campamento_theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
-        }
-
-        // Exportar datos
-        function exportData() {
-            // Crear objeto con todos los datos
-            const exportData = {
-                payments: payments,
-                exportDate: new Date().toISOString(),
-                summary: {
-                    totalCollected: payments.reduce((sum, p) => sum + (p.amount || 0), 0),
-                    totalPeople: payments.length,
-                    males: payments.filter(p => p.gender === 'male').length,
-                    females: payments.filter(p => p.gender === 'female').length,
-                    uniqueLocations: [...new Set(payments.map(p => p.location))].length
-                }
-            };
-            
-            // Convertir a JSON
-            const dataStr = JSON.stringify(exportData, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            // Crear enlace de descarga
-            const exportFileDefaultName = `campamento2026_datos_${new Date().toISOString().slice(0,10)}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-            
-            showNotification('Datos exportados correctamente como JSON', 'success');
-        }
-
-        // Ajustar altura de la tabla cuando cambia el tamaño de la ventana
-        window.addEventListener('resize', adjustTableHeight);
+        });
+        
+        // Formulario de registro
+        document.getElementById('paymentForm').addEventListener('submit', savePayment);
+        document.getElementById('clearForm').addEventListener('click', clearForm);
+        
+        // Campo de lugar "Otro"
+        document.getElementById('location').addEventListener('change', function() {
+            const otherGroup = document.getElementById('otherLocationGroup');
+            otherGroup.style.display = this.value === 'otro' ? 'block' : 'none';
+        });
+        
+        // Control de campos para menor/mayor de edad
+        document.getElementById('isMinor').addEventListener('change', toggleMinorFields);
+        
+        // Filtros de inscritos
+        document.getElementById('searchInscritos').addEventListener('input', filterInscritos);
+        document.getElementById('filterLocation').addEventListener('change', filterInscritos);
+        document.getElementById('filterGender').addEventListener('change', filterInscritos);
+        document.getElementById('filterStatus').addEventListener('change', filterInscritos);
+        document.getElementById('filterAgeType').addEventListener('change', filterInscritos);
+        
+        // Filtros de contabilidad
+        document.getElementById('applyAccountingFilters').addEventListener('click', updateAccountingTable);
+        document.getElementById('clearAccountingFilters').addEventListener('click', clearAccountingFilters);
+        
+        // Exportar
+        document.getElementById('exportBtn').addEventListener('click', exportData);
+        
+        // Cargar lugares en filtros
+        loadLocationsInFilters();
+        
+        // Ajustar altura de la tabla al cargar
+        setTimeout(adjustTableHeight, 300);
         
         // Cargar tema al iniciar
         loadTheme();
-    </script>
+    }
+    
+    // Ajustar altura de la tabla de inscritos
+    function adjustTableHeight() {
+        const inscritosTab = document.getElementById('inscritos');
+        if (inscritosTab.classList.contains('active')) {
+            const headerHeight = document.querySelector('header').offsetHeight;
+            const navTabsHeight = document.querySelector('.nav-tabs').offsetHeight;
+            const filtersHeight = document.querySelector('#inscritos .filters').offsetHeight;
+            const windowHeight = window.innerHeight;
+            
+            const calculatedHeight = windowHeight - headerHeight - navTabsHeight - filtersHeight - 100;
+            inscritosTab.style.height = calculatedHeight + 'px';
+        }
+    }
+
+    // ============================================
+    // FUNCIÓN PRINCIPAL PARA GUARDAR PAGOS
+    // ============================================
+    function savePayment(e) {
+        e.preventDefault();
+        
+        // Validar si se seleccionó menor de edad
+        const isMinor = document.getElementById('isMinor').value;
+        if (!isMinor) {
+            showNotification('Por favor seleccione si es menor de edad', 'warning');
+            return;
+        }
+        
+        // Obtener valores comunes
+        const fullName = document.getElementById('fullName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        let idNumber = '';
+        const gender = document.getElementById('gender').value;
+        let location = document.getElementById('location').value;
+        const paymentMethod = document.getElementById('paymentMethod').value;
+        const amount = parseFloat(document.getElementById('amount').value) || 0;
+        const totalAmount = parseFloat(document.getElementById('totalAmount').value) || 0;
+        const paymentDate = document.getElementById('paymentDate').value;
+        const eps = document.getElementById('eps').value.trim();
+        
+        // Variables para campos específicos
+        let minorDocType = '';
+        let guardianName = '';
+        let guardianId = '';
+        let guardianPhone = '';
+        let guardianRelationship = '';
+        let expeditionDate = '';
+        
+        // Validar campos según edad
+        if (isMinor === 'yes') {
+            // Validar campos de menor
+            minorDocType = document.getElementById('minorDocType').value;
+            idNumber = document.getElementById('minorDocNumber').value.trim();
+            guardianName = document.getElementById('guardianName').value.trim();
+            guardianId = document.getElementById('guardianId').value.trim();
+            guardianPhone = document.getElementById('guardianPhone').value.trim();
+            guardianRelationship = document.getElementById('guardianRelationship').value.trim();
+            
+            if (!minorDocType || !idNumber || !guardianName || !guardianId || !guardianPhone || !guardianRelationship) {
+                showNotification('Por favor complete todos los campos para menores de edad', 'warning');
+                return;
+            }
+        } else {
+            // Validar campos de adulto
+            idNumber = document.getElementById('idNumber').value.trim();
+            expeditionDate = document.getElementById('expeditionDate').value;
+            
+            if (!idNumber || !expeditionDate) {
+                showNotification('Por favor complete la cédula y fecha de expedición', 'warning');
+                return;
+            }
+        }
+        
+        if (location === 'otro') {
+            location = document.getElementById('otherLocation').value.trim();
+            if (!location) {
+                showNotification('Por favor especifique el lugar', 'warning');
+                return;
+            }
+        }
+        
+        // Validar campos obligatorios generales
+        if (!fullName || !phone || !gender || !eps || !paymentMethod || !paymentDate) {
+            showNotification('Por favor complete todos los campos obligatorios (*)', 'warning');
+            return;
+        }
+        
+        if (amount > totalAmount) {
+            showNotification('El monto abonado no puede ser mayor al monto total', 'warning');
+            return;
+        }
+        
+        // Calcular estado
+        let status = 'pending';
+        if (amount === 0) {
+            status = 'pending';
+        } else if (amount > 0 && amount < totalAmount) {
+            status = 'partial';
+        } else if (amount >= totalAmount) {
+            status = 'completed';
+        }
+        
+        // Verificar si ya existe una persona con el mismo documento
+        if (editPaymentId === null && payments.some(p => p.idNumber === idNumber && p.id !== editPaymentId)) {
+            showNotification('Ya existe una persona registrada con este documento', 'warning');
+            return;
+        }
+        
+        // Crear objeto de pago con estructura completa
+        const payment = {
+            id: editPaymentId ? editPaymentId : generateId(),
+            fullName,
+            phone,
+            idNumber,
+            gender,
+            isMinor,
+            eps,
+            location,
+            paymentMethod,
+            amount,
+            totalAmount,
+            status,
+            paymentDate: paymentDate,
+            registeredAt: new Date().toISOString(),
+            lastModified: new Date().toISOString(),
+            modifiedBy: getCurrentUser() || 'Usuario'
+        };
+        
+        // Agregar campos específicos según edad
+        if (isMinor === 'yes') {
+            payment.minorDocType = minorDocType;
+            payment.guardianName = guardianName;
+            payment.guardianId = guardianId;
+            payment.guardianPhone = guardianPhone;
+            payment.guardianRelationship = guardianRelationship;
+            // Limpiar campos de adulto
+            delete payment.expeditionDate;
+        } else {
+            payment.expeditionDate = expeditionDate;
+            // Limpiar campos de menor
+            delete payment.minorDocType;
+            delete payment.guardianName;
+            delete payment.guardianId;
+            delete payment.guardianPhone;
+            delete payment.guardianRelationship;
+        }
+        
+        // Guardar en Firebase
+        savePaymentToFirebase(payment);
+        
+        // Limpiar formulario
+        clearForm();
+        
+        showNotification(editPaymentId ? 'Registro actualizado correctamente' : 'Registro guardado correctamente', 'success');
+        editPaymentId = null;
+    }
+
+    // Función para guardar en Firebase
+    function savePaymentToFirebase(payment) {
+        database.ref("payments/" + payment.id).set(payment)
+            .then(() => {
+                console.log("Datos guardados en Firebase correctamente");
+            })
+            .catch(error => {
+                console.error("Error al guardar en Firebase:", error);
+                showNotification('Error al guardar en la base de datos', 'error');
+            });
+    }
+
+    // Función para mostrar/ocultar campos según edad
+    function toggleMinorFields() {
+        const isMinor = document.getElementById('isMinor').value;
+        const minorFields = document.getElementById('minorFields');
+        const adultFields = document.getElementById('adultFields');
+        
+        if (isMinor === 'yes') {
+            // Mostrar campos para menores
+            minorFields.style.display = 'block';
+            adultFields.style.display = 'none';
+            
+            // Hacer obligatorios campos de menor
+            setRequired('minorDocType', true);
+            setRequired('minorDocNumber', true);
+            setRequired('guardianName', true);
+            setRequired('guardianId', true);
+            setRequired('guardianPhone', true);
+            setRequired('guardianRelationship', true);
+            
+            // Quitar requerido a campos de adulto
+            setRequired('idNumber', false);
+            setRequired('expeditionDate', false);
+            
+            // Limpiar campos de adulto
+            document.getElementById('idNumber').value = '';
+            document.getElementById('expeditionDate').value = '';
+            
+        } else if (isMinor === 'no') {
+            // Mostrar campos para adultos
+            minorFields.style.display = 'none';
+            adultFields.style.display = 'block';
+            
+            // Hacer obligatorios campos de adulto
+            setRequired('idNumber', true);
+            setRequired('expeditionDate', true);
+            
+            // Quitar requerido a campos de menor
+            setRequired('minorDocType', false);
+            setRequired('minorDocNumber', false);
+            setRequired('guardianName', false);
+            setRequired('guardianId', false);
+            setRequired('guardianPhone', false);
+            setRequired('guardianRelationship', false);
+            
+            // Limpiar campos de menor
+            document.getElementById('minorDocType').value = '';
+            document.getElementById('minorDocNumber').value = '';
+            document.getElementById('guardianName').value = '';
+            document.getElementById('guardianId').value = '';
+            document.getElementById('guardianPhone').value = '';
+            document.getElementById('guardianRelationship').value = '';
+        } else {
+            // Ocultar ambos si no hay selección
+            minorFields.style.display = 'none';
+            adultFields.style.display = 'none';
+            
+            // Quitar requerido a todos
+            setRequired('idNumber', false);
+            setRequired('expeditionDate', false);
+            setRequired('minorDocType', false);
+            setRequired('minorDocNumber', false);
+            setRequired('guardianName', false);
+            setRequired('guardianId', false);
+            setRequired('guardianPhone', false);
+            setRequired('guardianRelationship', false);
+        }
+    }
+
+    // Función auxiliar para establecer campos como requeridos
+    function setRequired(elementId, required) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.required = required;
+        }
+    }
+
+    // Limpiar formulario
+    function clearForm() {
+        document.getElementById('paymentForm').reset();
+        document.getElementById('otherLocationGroup').style.display = 'none';
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('paymentDate').value = today;
+        document.getElementById('totalAmount').value = 270000;
+        
+        // Ocultar campos condicionales
+        document.getElementById('minorFields').style.display = 'none';
+        document.getElementById('adultFields').style.display = 'none';
+        
+        // Restablecer campos requeridos
+        setRequired('idNumber', false);
+        setRequired('expeditionDate', false);
+        setRequired('minorDocType', false);
+        setRequired('minorDocNumber', false);
+        setRequired('guardianName', false);
+        setRequired('guardianId', false);
+        setRequired('guardianPhone', false);
+        setRequired('guardianRelationship', false);
+        
+        editPaymentId = null;
+    }
+
+    // ============================================
+    // FUNCIÓN PARA CARGAR TABLA DE INSCRITOS
+    // ============================================
+    function loadPaymentsTable() {
+        const tbody = document.getElementById('inscritosTable');
+        
+        if (payments.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="15" class="no-data">
+                        <div style="font-size: 18px; margin-bottom: 10px;">
+                            <i class="fas fa-users-slash fa-2x"></i>
+                        </div>
+                        <p style="font-size: 16px;">No hay registros de abonos</p>
+                        <p style="font-size: 14px; margin-top: 10px;">¡Registra el primer abono en la pestaña "Registrar Abono"!</p>
+                    </td>
+                </tr>
+            `;
+            document.getElementById('inscritosCount').textContent = '0';
+            return;
+        }
+        
+        // Ordenar por fecha de registro (más reciente primero)
+        const sortedPayments = [...payments].sort((a, b) => new Date(b.registeredAt) - new Date(a.registeredAt));
+        
+        // Limpiar tabla
+        tbody.innerHTML = '';
+        
+        sortedPayments.forEach(payment => {
+            const row = document.createElement('tr');
+            row.id = `row-${payment.id}`;
+            const balance = payment.totalAmount - payment.amount;
+            const statusText = getStatusText(payment.status);
+            const statusClass = `status-${payment.status}`;
+            
+            // Determinar tipo de persona
+            const isMinor = payment.isMinor === 'yes';
+            const tipo = isMinor ? 'Menor' : 'Adulto';
+            
+            // Formatear documento según tipo
+            let documento = payment.idNumber || '-';
+            if (isMinor && payment.minorDocType) {
+                documento = `${payment.minorDocType}: ${documento}`;
+            }
+            
+            // Información del acudiente (solo para menores)
+            const acudiente = isMinor && payment.guardianName ? 
+                `${payment.guardianName} (${payment.guardianRelationship || '-'})` : '-';
+            
+            // EPS
+            const eps = payment.eps || '-';
+            
+            row.innerHTML = `
+                <td><strong>${payment.fullName}</strong></td>
+                <td>${payment.phone}</td>
+                <td>${documento}</td>
+                <td>${tipo}</td>
+                <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
+                <td>${eps}</td>
+                <td>${acudiente}</td>
+                <td>${payment.location}</td>
+                <td>
+                    <div class="payment-method">
+                        <i class="fas ${getPaymentMethodIcon(payment.paymentMethod)}"></i>
+                        ${payment.paymentMethod}
+                    </div>
+                </td>
+                <td><strong style="color: ${payment.amount > 0 ? 'var(--primary-color)' : 'var(--warning-color)'}">$${formatCurrency(payment.amount)}</strong></td>
+                <td>$${formatCurrency(payment.totalAmount)}</td>
+                <td><strong style="color: ${balance > 0 ? 'var(--warning-color)' : 'var(--success-color)'}">$${formatCurrency(balance)}</strong></td>
+                <td>
+                    <div class="payment-status ${statusClass}" data-id="${payment.id}">
+                        ${statusText}
+                    </div>
+                </td>
+                <td>${formatDate(payment.paymentDate)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn edit-payment" data-id="${payment.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn delete-payment" data-id="${payment.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        document.getElementById('inscritosCount').textContent = payments.length;
+        
+        // Agregar eventos a los botones de editar/eliminar
+        document.querySelectorAll('.edit-payment').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                editPayment(paymentId);
+            });
+        });
+        
+        document.querySelectorAll('.delete-payment').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                deletePayment(paymentId);
+            });
+        });
+        
+        // Agregar eventos a los estados de abono
+        document.querySelectorAll('.payment-status').forEach(status => {
+            status.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                changePaymentStatus(paymentId, this);
+            });
+        });
+    }
+
+    // ============================================
+    // FUNCIÓN PARA EDITAR REGISTRO
+    // ============================================
+    function editPayment(paymentId) {
+        const payment = payments.find(p => p.id === paymentId);
+        if (!payment) return;
+        
+        editPaymentId = paymentId;
+        
+        // Llenar campos comunes
+        document.getElementById('fullName').value = payment.fullName;
+        document.getElementById('phone').value = payment.phone;
+        document.getElementById('gender').value = payment.gender;
+        document.getElementById('eps').value = payment.eps || '';
+        
+        // Establecer si es menor y mostrar campos correspondientes
+        const isMinor = payment.isMinor || 'no';
+        document.getElementById('isMinor').value = isMinor;
+        
+        // Disparar evento para mostrar campos correctos
+        setTimeout(() => {
+            const event = new Event('change');
+            document.getElementById('isMinor').dispatchEvent(event);
+            
+            // Llenar campos según edad
+            if (isMinor === 'yes') {
+                document.getElementById('minorDocType').value = payment.minorDocType || '';
+                document.getElementById('minorDocNumber').value = payment.idNumber;
+                document.getElementById('guardianName').value = payment.guardianName || '';
+                document.getElementById('guardianId').value = payment.guardianId || '';
+                document.getElementById('guardianPhone').value = payment.guardianPhone || '';
+                document.getElementById('guardianRelationship').value = payment.guardianRelationship || '';
+            } else {
+                document.getElementById('idNumber').value = payment.idNumber;
+                document.getElementById('expeditionDate').value = payment.expeditionDate || '';
+            }
+        }, 100);
+        
+        // Lugar
+        const locationSelect = document.getElementById('location');
+        const optionExists = Array.from(locationSelect.options).some(option => option.value === payment.location);
+        
+        if (optionExists) {
+            document.getElementById('location').value = payment.location;
+            document.getElementById('otherLocationGroup').style.display = 'none';
+        } else {
+            document.getElementById('location').value = 'otro';
+            document.getElementById('otherLocationGroup').style.display = 'block';
+            document.getElementById('otherLocation').value = payment.location;
+        }
+        
+        document.getElementById('paymentMethod').value = payment.paymentMethod;
+        document.getElementById('amount').value = payment.amount;
+        document.getElementById('totalAmount').value = payment.totalAmount;
+        document.getElementById('paymentDate').value = payment.paymentDate;
+        
+        // Cambiar a la pestaña de registro
+        document.querySelector('.nav-tab[data-tab="registro"]').click();
+        
+        document.getElementById('fullName').focus();
+        showNotification('Modifica los datos y haz clic en "Guardar Registro" para actualizar', 'info');
+    }
+
+    // Eliminar pago
+    function deletePayment(paymentId) {
+        if (!confirm('¿Está seguro de eliminar este registro de abono?')) return;
+        
+        // Eliminar de Firebase
+        database.ref("payments/" + paymentId).remove()
+            .then(() => {
+                showNotification('Registro eliminado correctamente', 'success');
+            })
+            .catch(error => {
+                console.error("Error al eliminar de Firebase:", error);
+                showNotification('Error al eliminar el registro', 'error');
+            });
+    }
+
+    // Filtrar inscritos
+    function filterInscritos() {
+        const searchTerm = document.getElementById('searchInscritos').value.toLowerCase();
+        const locationFilter = document.getElementById('filterLocation').value;
+        const genderFilter = document.getElementById('filterGender').value;
+        const statusFilter = document.getElementById('filterStatus').value;
+        const ageTypeFilter = document.getElementById('filterAgeType').value;
+        
+        filteredPayments = payments.filter(payment => {
+            // Filtrar por búsqueda
+            if (searchTerm) {
+                const searchFields = [
+                    payment.fullName?.toLowerCase() || '',
+                    payment.idNumber?.toLowerCase() || '',
+                    payment.phone?.toLowerCase() || '',
+                    payment.eps?.toLowerCase() || '',
+                    payment.guardianName?.toLowerCase() || ''
+                ];
+                
+                if (!searchFields.some(field => field.includes(searchTerm))) {
+                    return false;
+                }
+            }
+            
+            // Filtrar por lugar
+            if (locationFilter && payment.location !== locationFilter) {
+                return false;
+            }
+            
+            // Filtrar por género
+            if (genderFilter && payment.gender !== genderFilter) {
+                return false;
+            }
+            
+            // Filtrar por estado
+            if (statusFilter && payment.status !== statusFilter) {
+                return false;
+            }
+            
+            // Filtrar por tipo de edad
+            if (ageTypeFilter) {
+                if (ageTypeFilter === 'minor' && payment.isMinor !== 'yes') return false;
+                if (ageTypeFilter === 'adult' && payment.isMinor !== 'no') return false;
+            }
+            
+            return true;
+        });
+        
+        // Actualizar tabla con resultados filtrados
+        const tbody = document.getElementById('inscritosTable');
+        
+        if (filteredPayments.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="15" class="no-data">
+                        <div style="font-size: 18px; margin-bottom: 10px;">
+                            <i class="fas fa-search fa-2x"></i>
+                        </div>
+                        <p style="font-size: 16px;">No se encontraron registros con los filtros aplicados</p>
+                        <p style="font-size: 14px; margin-top: 10px;">Intenta con otros criterios de búsqueda</p>
+                    </td>
+                </tr>
+            `;
+            document.getElementById('inscritosCount').textContent = filteredPayments.length;
+            return;
+        }
+        
+        // Limpiar tabla
+        tbody.innerHTML = '';
+        
+        filteredPayments.forEach(payment => {
+            const row = document.createElement('tr');
+            row.id = `row-${payment.id}`;
+            const balance = payment.totalAmount - payment.amount;
+            const statusText = getStatusText(payment.status);
+            const statusClass = `status-${payment.status}`;
+            
+            // Determinar tipo de persona
+            const isMinor = payment.isMinor === 'yes';
+            const tipo = isMinor ? 'Menor' : 'Adulto';
+            
+            // Formatear documento según tipo
+            let documento = payment.idNumber || '-';
+            if (isMinor && payment.minorDocType) {
+                documento = `${payment.minorDocType}: ${documento}`;
+            }
+            
+            // Información del acudiente (solo para menores)
+            const acudiente = isMinor && payment.guardianName ? 
+                `${payment.guardianName} (${payment.guardianRelationship || '-'})` : '-';
+            
+            // EPS
+            const eps = payment.eps || '-';
+            
+            row.innerHTML = `
+                <td><strong>${payment.fullName}</strong></td>
+                <td>${payment.phone}</td>
+                <td>${documento}</td>
+                <td>${tipo}</td>
+                <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
+                <td>${eps}</td>
+                <td>${acudiente}</td>
+                <td>${payment.location}</td>
+                <td>
+                    <div class="payment-method">
+                        <i class="fas ${getPaymentMethodIcon(payment.paymentMethod)}"></i>
+                        ${payment.paymentMethod}
+                    </div>
+                </td>
+                <td><strong style="color: ${payment.amount > 0 ? 'var(--primary-color)' : 'var(--warning-color)'}">$${formatCurrency(payment.amount)}</strong></td>
+                <td>$${formatCurrency(payment.totalAmount)}</td>
+                <td><strong style="color: ${balance > 0 ? 'var(--warning-color)' : 'var(--success-color)'}">$${formatCurrency(balance)}</strong></td>
+                <td>
+                    <div class="payment-status ${statusClass}" data-id="${payment.id}">
+                        ${statusText}
+                    </div>
+                </td>
+                <td>${formatDate(payment.paymentDate)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn edit-payment" data-id="${payment.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn delete-payment" data-id="${payment.id}" title="Eliminar">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        // Actualizar contador
+        document.getElementById('inscritosCount').textContent = filteredPayments.length;
+        
+        // Agregar eventos a los botones de editar/eliminar
+        document.querySelectorAll('.edit-payment').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                editPayment(paymentId);
+            });
+        });
+        
+        document.querySelectorAll('.delete-payment').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                deletePayment(paymentId);
+            });
+        });
+        
+        // Agregar eventos a los estados de abono
+        document.querySelectorAll('.payment-status').forEach(status => {
+            status.addEventListener('click', function() {
+                const paymentId = this.getAttribute('data-id');
+                changePaymentStatus(paymentId, this);
+            });
+        });
+    }
+
+    // Cambiar estado de abono
+    function changePaymentStatus(paymentId, statusElement) {
+        const payment = payments.find(p => p.id === paymentId);
+        if (!payment) return;
+        
+        // Crear select para cambiar estado
+        const select = document.createElement('select');
+        select.className = 'status-select';
+        select.innerHTML = `
+            <option value="pending" ${payment.status === 'pending' ? 'selected' : ''}>Pendiente</option>
+            <option value="partial" ${payment.status === 'partial' ? 'selected' : ''}>Abonado</option>
+            <option value="completed" ${payment.status === 'completed' ? 'selected' : ''}>Completo</option>
+            <option value="cancelled" ${payment.status === 'cancelled' ? 'selected' : ''}>Cancelado</option>
+        `;
+        
+        // Guardar referencia al elemento original
+        const originalStatus = payment.status;
+        const originalText = statusElement.textContent;
+        const originalClass = statusElement.className;
+        
+        // Reemplazar el estado con el select
+        statusElement.replaceWith(select);
+        
+        // Enfocar el select
+        select.focus();
+        
+        // Guardar cuando cambie el valor
+        select.addEventListener('change', function() {
+            const newStatus = this.value;
+            payment.status = newStatus;
+            payment.lastModified = new Date().toISOString();
+            payment.modifiedBy = getCurrentUser() || 'Usuario';
+            
+            // Guardar cambios en Firebase
+            savePaymentToFirebase(payment);
+        });
+        
+        // Si se hace clic fuera, cancelar
+        select.addEventListener('blur', function() {
+            setTimeout(() => {
+                if (document.activeElement !== select) {
+                    // Restaurar el estado original
+                    const newStatusElement = document.createElement('div');
+                    newStatusElement.className = originalClass;
+                    newStatusElement.textContent = originalText;
+                    newStatusElement.setAttribute('data-id', paymentId);
+                    
+                    this.replaceWith(newStatusElement);
+                    
+                    // Volver a agregar el evento
+                    newStatusElement.addEventListener('click', function() {
+                        changePaymentStatus(paymentId, this);
+                    });
+                }
+            }, 200);
+        });
+    }
+
+    // ============================================
+    // FUNCIONES AUXILIARES
+    // ============================================
+
+    // Obtener texto del estado
+    function getStatusText(status) {
+        switch(status) {
+            case 'pending': return 'Pendiente';
+            case 'partial': return 'Abonado';
+            case 'completed': return 'Completo';
+            case 'cancelled': return 'Cancelado';
+            default: return 'Pendiente';
+        }
+    }
+
+    // Cargar lugares en filtros
+    function loadLocationsInFilters() {
+        const locationFilter = document.getElementById('filterLocation');
+        const accountingLocation = document.getElementById('accountingLocation');
+        
+        // Obtener lugares únicos
+        const uniqueLocations = [...new Set(payments.map(p => p.location))].sort();
+        
+        // Limpiar opciones excepto la primera
+        while (locationFilter.options.length > 1) {
+            locationFilter.remove(1);
+        }
+        
+        while (accountingLocation.options.length > 1) {
+            accountingLocation.remove(1);
+        }
+        
+        // Agregar lugares
+        uniqueLocations.forEach(location => {
+            const option1 = document.createElement('option');
+            option1.value = location;
+            option1.textContent = location;
+            locationFilter.appendChild(option1);
+            
+            const option2 = document.createElement('option');
+            option2.value = location;
+            option2.textContent = location;
+            accountingLocation.appendChild(option2);
+        });
+    }
+
+    // Actualizar estadísticas
+    function updateStats() {
+        const totalCollected = payments.reduce((sum, payment) => sum + (payment.amount || 0), 0);
+        const totalPeople = payments.length;
+        const avgPayment = totalPeople > 0 ? totalCollected / totalPeople : 0;
+        const uniqueLocations = [...new Set(payments.map(p => p.location))].length;
+        
+        document.getElementById('totalCollected').textContent = `$${formatCurrency(totalCollected)}`;
+        document.getElementById('totalPeople').textContent = totalPeople;
+        document.getElementById('avgPayment').textContent = `$${formatCurrency(avgPayment)}`;
+        document.getElementById('totalLocations').textContent = uniqueLocations;
+    }
+
+    // Actualizar tabla de contabilidad
+    function updateAccountingTable() {
+        const locationFilter = document.getElementById('accountingLocation').value;
+        const methodFilter = document.getElementById('accountingMethod').value;
+        const dateFilter = document.getElementById('accountingDate').value;
+        
+        // Filtrar pagos
+        let filtered = [...payments];
+        
+        if (locationFilter) {
+            filtered = filtered.filter(p => p.location === locationFilter);
+        }
+        
+        if (methodFilter) {
+            filtered = filtered.filter(p => p.paymentMethod === methodFilter);
+        }
+        
+        if (dateFilter) {
+            filtered = filtered.filter(p => p.paymentDate && p.paymentDate.startsWith(dateFilter));
+        }
+        
+        // Calcular total por método de pago
+        const methods = ['EFECTIVO', 'TRANSFERENCIA BANCARIA'];
+        const methodData = {};
+        let totalGeneral = 0;
+        
+        methods.forEach(method => {
+            const methodPayments = filtered.filter(p => p.paymentMethod === method);
+            const total = methodPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
+            methodData[method] = {
+                count: methodPayments.length,
+                total: total
+            };
+            totalGeneral += total;
+        });
+        
+        // Actualizar tabla
+        const tbody = document.getElementById('accountingTable');
+        tbody.innerHTML = '';
+        
+        methods.forEach(method => {
+            const data = methodData[method];
+            const percentage = totalGeneral > 0 ? (data.total / totalGeneral * 100).toFixed(1) : 0;
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${method}</td>
+                <td>${data.count}</td>
+                <td><strong>$${formatCurrency(data.total)}</strong></td>
+                <td>${percentage}%</td>
+            `;
+            tbody.appendChild(row);
+        });
+        
+        // Agregar fila de total
+        const totalRow = document.createElement('tr');
+        totalRow.style.backgroundColor = 'rgba(46, 139, 87, 0.1)';
+        totalRow.style.fontWeight = 'bold';
+        totalRow.innerHTML = `
+            <td>TOTAL</td>
+            <td>${filtered.length}</td>
+            <td>$${formatCurrency(totalGeneral)}</td>
+            <td>100%</td>
+        `;
+        tbody.appendChild(totalRow);
+    }
+
+    // Limpiar filtros de contabilidad
+    function clearAccountingFilters() {
+        document.getElementById('accountingLocation').value = '';
+        document.getElementById('accountingMethod').value = '';
+        document.getElementById('accountingDate').value = '';
+        updateAccountingTable();
+    }
+
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function getPaymentMethodIcon(method) {
+        switch(method) {
+            case 'EFECTIVO': return 'fa-money-bill-wave';
+            case 'TRANSFERENCIA BANCARIA': return 'fa-university';
+            default: return 'fa-money-check';
+        }
+    }
+
+    function formatDate(dateString) {
+        try {
+            if (!dateString) return 'Sin fecha';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        } catch (e) {
+            return dateString;
+        }
+    }
+
+    function formatCurrency(amount) {
+        return parseFloat(amount || 0).toLocaleString('es-ES', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        });
+    }
+
+    // Obtener usuario actual (simplificado)
+    function getCurrentUser() {
+        let user = localStorage.getItem('campamento_user');
+        if (!user) {
+            user = prompt('Por favor, ingresa tu nombre para identificar tus cambios:', 'Usuario');
+            if (user) {
+                localStorage.setItem('campamento_user', user);
+            } else {
+                user = 'Usuario';
+            }
+        }
+        return user;
+    }
+
+    // Mostrar notificación
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            background-color: ${type === 'success' ? 'var(--success-color)' : 
+                            type === 'warning' ? 'var(--warning-color)' : 
+                            type === 'error' ? 'var(--danger-color)' : 
+                            'var(--info-color)'};
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+        `;
+        
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        // Remover después de 3 segundos
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
+        
+        // Agregar estilos de animación si no existen
+        if (!document.getElementById('notification-styles')) {
+            const style = document.createElement('style');
+            style.id = 'notification-styles';
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    // Alternar tema claro/oscuro
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem('campamento_theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    }
+
+    // Cargar tema guardado
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('campamento_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+    }
+
+    // Exportar datos
+    function exportData() {
+    if (payments.length === 0) {
+        showNotification('No hay datos para exportar', 'warning');
+        return;
+    }
+
+    // Transformar datos a formato Excel
+    const excelData = payments.map(p => ({
+        "Nombre Completo": p.fullName,
+        "Teléfono": p.phone,
+        "Tipo": p.isMinor === 'yes' ? 'Menor' : 'Adulto',
+        "Documento": p.isMinor === 'yes'
+            ? `${p.minorDocType || ''} ${p.idNumber}`
+            : p.idNumber,
+        "Género": p.gender === 'male' ? 'Masculino' : 'Femenino',
+        "EPS": p.eps || '',
+        "Acudiente": p.isMinor === 'yes' ? (p.guardianName || '') : '',
+        "Parentesco": p.isMinor === 'yes' ? (p.guardianRelationship || '') : '',
+        "Lugar": p.location,
+        "Método de Pago": p.paymentMethod,
+        "Abono": p.amount,
+        "Total": p.totalAmount,
+        "Saldo": p.totalAmount - p.amount,
+        "Estado": getStatusText(p.status),
+        "Fecha de Pago": p.paymentDate,
+        "Registrado": formatDate(p.registeredAt)
+    }));
+
+    // Crear hoja
+    const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+    // Crear libro
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Inscritos");
+
+    // Ajustar ancho de columnas automáticamente
+    worksheet["!cols"] = Object.keys(excelData[0]).map(() => ({ wch: 22 }));
+
+    // Descargar archivo
+    XLSX.writeFile(
+        workbook,
+        `Campamento_2026_Inscritos_${new Date().toISOString().split('T')[0]}.xlsx`
+    );
+
+    showNotification('Archivo Excel descargado correctamente', 'success');
+}
+
+
+    // Ajustar altura de la tabla cuando cambia el tamaño de la ventana
+    window.addEventListener('resize', adjustTableHeight);
+</script>
 </body>
 </html>
