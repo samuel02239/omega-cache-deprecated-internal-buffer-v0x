@@ -984,14 +984,26 @@
         // Establecer un valor por defecto
         fechaInput.value = '2000-01-01';
 
-        // Función para calcular edad
-        function calcularEdad(fechaNac) {
-            const nac = new Date(fechaNac);
+        // FUNCIÓN NUEVA: Para crear una fecha segura sin problemas de zona horaria
+        function crearFechaSegura(fechaStr) {
+            // fechaStr está en formato "YYYY-MM-DD"
+            const [year, month, day] = fechaStr.split('-').map(Number);
+            return new Date(year, month - 1, day); // Usar constructor seguro
+        }
+
+        // FUNCIÓN CORREGIDA: Para calcular edad
+        function calcularEdad(fechaNacStr) {
+            const fechaNac = crearFechaSegura(fechaNacStr);
             const hoy = new Date();
-            let edad = hoy.getFullYear() - nac.getFullYear();
-            const mes = hoy.getMonth() - nac.getMonth();
-            const dia = hoy.getDate() - nac.getDate();
-            if (mes < 0 || (mes === 0 && dia < 0)) edad--;
+            
+            let edad = hoy.getFullYear() - fechaNac.getFullYear();
+            const mes = hoy.getMonth() - fechaNac.getMonth();
+            const dia = hoy.getDate() - fechaNac.getDate();
+            
+            if (mes < 0 || (mes === 0 && dia < 0)) {
+                edad--;
+            }
+            
             return edad;
         }
 
@@ -1000,14 +1012,26 @@
             return nombre.charAt(0).toUpperCase();
         }
 
-        // Función para formatear fecha a formato español
+        // FUNCIÓN CORREGIDA: Para formatear fecha a formato español
         function formatearFecha(fechaStr) {
-            const fecha = new Date(fechaStr);
+            const fecha = crearFechaSegura(fechaStr);
             return fecha.toLocaleDateString('es-ES', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
             });
+        }
+
+        // FUNCIÓN NUEVA: Para obtener el mes de una fecha (1-12)
+        function obtenerMes(fechaStr) {
+            const fecha = crearFechaSegura(fechaStr);
+            return fecha.getMonth() + 1; // 1-12
+        }
+
+        // FUNCIÓN NUEVA: Para obtener el día del mes de una fecha
+        function obtenerDia(fechaStr) {
+            const fecha = crearFechaSegura(fechaStr);
+            return fecha.getDate();
         }
 
         // Actualizar estadísticas
@@ -1017,7 +1041,7 @@
             // Cumpleaños este mes
             const mesActual = hoy.getMonth() + 1;
             const cumpleMesActual = cumpleanios.filter(p => {
-                return new Date(p.fecha).getMonth() + 1 === mesActual;
+                return obtenerMes(p.fecha) === mesActual;
             }).length;
             cumpleEsteMes.textContent = cumpleMesActual;
             
@@ -1034,7 +1058,7 @@
             if (cumpleanios.length > 0) {
                 const conteoMeses = new Array(12).fill(0);
                 cumpleanios.forEach(p => {
-                    const mes = new Date(p.fecha).getMonth();
+                    const mes = obtenerMes(p.fecha) - 1; // Convertir a 0-11
                     conteoMeses[mes]++;
                 });
                 
@@ -1061,9 +1085,12 @@
                 return;
             }
 
-            // Validar que la fecha no sea futura
-            const fechaNac = new Date(fecha);
-            if (fechaNac > new Date()) {
+            // CORREGIDO: Validar que la fecha no sea futura usando fecha segura
+            const fechaNac = crearFechaSegura(fecha);
+            const hoy = new Date();
+            const hoySeguro = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+            
+            if (fechaNac > hoySeguro) {
                 alert("⚠️ La fecha no puede ser futura.");
                 return;
             }
@@ -1209,9 +1236,12 @@
                 return;
             }
 
-            // Validar que la fecha no sea futura
-            const fechaNac = new Date(fecha);
-            if (fechaNac > new Date()) {
+            // CORREGIDO: Validar que la fecha no sea futura usando fecha segura
+            const fechaNac = crearFechaSegura(fecha);
+            const hoy = new Date();
+            const hoySeguro = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
+            
+            if (fechaNac > hoySeguro) {
                 alert("⚠️ La fecha no puede ser futura.");
                 return;
             }
@@ -1273,17 +1303,17 @@
                 grupos[i] = [];
             }
 
+            // CORREGIDO: Usar función obtenerMes en lugar de new Date()
             cumpleanios.forEach(persona => {
-                const mes = new Date(persona.fecha).getMonth() + 1;
+                const mes = obtenerMes(persona.fecha);
                 grupos[mes].push(persona);
             });
 
             // Ordenar cada grupo por día (y luego por nombre)
             for (let mes in grupos) {
                 grupos[mes].sort((a, b) => {
-                    const fechaA = new Date(a.fecha);
-                    const fechaB = new Date(b.fecha);
-                    const diffDias = fechaA.getDate() - fechaB.getDate();
+                    // CORREGIDO: Usar función obtenerDia en lugar de new Date()
+                    const diffDias = obtenerDia(a.fecha) - obtenerDia(b.fecha);
                     if (diffDias !== 0) return diffDias;
                     return a.nombre.localeCompare(b.nombre);
                 });
