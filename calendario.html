@@ -1364,7 +1364,8 @@
             const sortedActivities = [...activitiesToShow].sort((a, b) => new Date(a.date) - new Date(b.date));
             
             sortedActivities.forEach(activity => {
-                const activityDate = new Date(activity.date);
+                const [year, month, day] = activity.date.split('-');
+                const activityDate = new Date(year, month - 1, day);
                 const formattedDate = activityDate.toLocaleDateString('es-ES', {
                     weekday: 'long',
                     year: 'numeric',
@@ -1415,7 +1416,10 @@
 
         // Obtener actividades por fecha
         function getActivitiesByDate(date) {
-            const dateString = date.toISOString().split('T')[0];
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
             return activities.filter(activity => activity.date === dateString);
         }
 
@@ -1455,7 +1459,7 @@
             }
             
             // Agregar meses únicos de las actividades
-            const uniqueMonths = [...new Set(activities.map(a => new Date(a.date).getMonth()))];
+            const uniqueMonths = [...new Set(activities.map(a => parseInt(a.date.split('-')[1], 10) - 1))];
             uniqueMonths.sort((a, b) => a - b);
             
             uniqueMonths.forEach(monthIndex => {
