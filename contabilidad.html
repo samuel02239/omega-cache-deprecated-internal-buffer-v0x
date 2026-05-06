@@ -377,7 +377,7 @@
         .excel-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1600px;
+            min-width: 2200px;
         }
 
         .excel-table thead {
@@ -779,6 +779,16 @@
                         <input type="text" id="minorDocNumber" class="form-control">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="minorBirthDate">Fecha de nacimiento (Menor)</label>
+                        <input type="date" id="minorBirthDate" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="minorExpeditionDate">Fecha de expedición (Menor)</label>
+                        <input type="date" id="minorExpeditionDate" class="form-control">
+                    </div>
+                </div>
                 
                 <!-- Datos del acudiente -->
                 <h3 style="margin: 20px 0 10px; color: var(--primary-color);">Datos del acudiente</h3>
@@ -802,6 +812,12 @@
                         <input type="text" id="guardianRelationship" class="form-control" placeholder="Padre, madre, tutor, etc.">
                     </div>
                 </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guardianExpeditionDate">Fecha de expedición del acudiente</label>
+                        <input type="date" id="guardianExpeditionDate" class="form-control">
+                    </div>
+                </div>
             </div>
 
             <!-- Campos para MAYORES DE EDAD (ocultos inicialmente) -->
@@ -814,6 +830,12 @@
                     <div class="form-group">
                         <label for="expeditionDate">Fecha de expedición de la cédula *</label>
                         <input type="date" id="expeditionDate" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthDate">Fecha de nacimiento</label>
+                        <input type="date" id="birthDate" class="form-control">
                     </div>
                 </div>
             </div>
@@ -918,6 +940,11 @@
                                 <th>Género</th>
                                 <th>EPS</th>
                                 <th>Acudiente</th>
+                                <th>F. Nacimiento</th>
+                                <th>Expedición</th>
+                                <th>F. Nac. Menor</th>
+                                <th>Exp. Menor</th>
+                                <th>Exp. Acudiente</th>
                                 <th>Lugar</th>
                                 <th>Método Pago</th>
                                 <th>Abono</th>
@@ -1271,16 +1298,24 @@
             payment.guardianId = guardianId;
             payment.guardianPhone = guardianPhone;
             payment.guardianRelationship = guardianRelationship;
+            payment.minorBirthDate = document.getElementById('minorBirthDate')?.value || '';
+            payment.minorExpeditionDate = document.getElementById('minorExpeditionDate')?.value || '';
+            payment.guardianExpeditionDate = document.getElementById('guardianExpeditionDate')?.value || '';
             // Limpiar campos de adulto
             delete payment.expeditionDate;
+            delete payment.birthDate;
         } else {
             payment.expeditionDate = expeditionDate;
+            payment.birthDate = document.getElementById('birthDate')?.value || '';
             // Limpiar campos de menor
             delete payment.minorDocType;
             delete payment.guardianName;
             delete payment.guardianId;
             delete payment.guardianPhone;
             delete payment.guardianRelationship;
+            delete payment.minorBirthDate;
+            delete payment.minorExpeditionDate;
+            delete payment.guardianExpeditionDate;
         }
         
         // Guardar en Firebase
@@ -1331,6 +1366,7 @@
             // Limpiar campos de adulto
             document.getElementById('idNumber').value = '';
             document.getElementById('expeditionDate').value = '';
+            document.getElementById('birthDate').value = '';
             
         } else if (isMinor === 'no') {
             // Mostrar campos para adultos
@@ -1356,6 +1392,9 @@
             document.getElementById('guardianId').value = '';
             document.getElementById('guardianPhone').value = '';
             document.getElementById('guardianRelationship').value = '';
+            document.getElementById('minorBirthDate').value = '';
+            document.getElementById('minorExpeditionDate').value = '';
+            document.getElementById('guardianExpeditionDate').value = '';
         } else {
             // Ocultar ambos si no hay selección
             minorFields.style.display = 'none';
@@ -1402,8 +1441,6 @@
         setRequired('guardianId', false);
         setRequired('guardianPhone', false);
         setRequired('guardianRelationship', false);
-        
-        editPaymentId = null;
     }
 
     // ============================================
@@ -1415,7 +1452,7 @@
         if (payments.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="15" class="no-data">
+                    <td colspan="20" class="no-data">
                         <div style="font-size: 18px; margin-bottom: 10px;">
                             <i class="fas fa-users-slash fa-2x"></i>
                         </div>
@@ -1466,6 +1503,11 @@
                 <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
                 <td>${eps}</td>
                 <td>${acudiente}</td>
+                <td>${payment.birthDate ? formatDate(payment.birthDate) : ''}</td>
+                <td>${payment.expeditionDate ? formatDate(payment.expeditionDate) : ''}</td>
+                <td>${payment.minorBirthDate ? formatDate(payment.minorBirthDate) : ''}</td>
+                <td>${payment.minorExpeditionDate ? formatDate(payment.minorExpeditionDate) : ''}</td>
+                <td>${payment.guardianExpeditionDate ? formatDate(payment.guardianExpeditionDate) : ''}</td>
                 <td>${payment.location}</td>
                 <td>
                     <div class="payment-method">
@@ -1554,9 +1596,13 @@
                 document.getElementById('guardianId').value = payment.guardianId || '';
                 document.getElementById('guardianPhone').value = payment.guardianPhone || '';
                 document.getElementById('guardianRelationship').value = payment.guardianRelationship || '';
+                document.getElementById('minorBirthDate').value = payment.minorBirthDate || '';
+                document.getElementById('minorExpeditionDate').value = payment.minorExpeditionDate || '';
+                document.getElementById('guardianExpeditionDate').value = payment.guardianExpeditionDate || '';
             } else {
                 document.getElementById('idNumber').value = payment.idNumber;
                 document.getElementById('expeditionDate').value = payment.expeditionDate || '';
+                document.getElementById('birthDate').value = payment.birthDate || '';
             }
         }, 100);
         
@@ -1654,7 +1700,7 @@
         if (filteredPayments.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="15" class="no-data">
+                    <td colspan="20" class="no-data">
                         <div style="font-size: 18px; margin-bottom: 10px;">
                             <i class="fas fa-search fa-2x"></i>
                         </div>
@@ -1702,6 +1748,11 @@
                 <td>${payment.gender === 'male' ? 'Masculino' : 'Femenino'}</td>
                 <td>${eps}</td>
                 <td>${acudiente}</td>
+                <td>${payment.birthDate ? formatDate(payment.birthDate) : ''}</td>
+                <td>${payment.expeditionDate ? formatDate(payment.expeditionDate) : ''}</td>
+                <td>${payment.minorBirthDate ? formatDate(payment.minorBirthDate) : ''}</td>
+                <td>${payment.minorExpeditionDate ? formatDate(payment.minorExpeditionDate) : ''}</td>
+                <td>${payment.guardianExpeditionDate ? formatDate(payment.guardianExpeditionDate) : ''}</td>
                 <td>${payment.location}</td>
                 <td>
                     <div class="payment-method">
@@ -2077,10 +2128,15 @@
         "Documento": p.isMinor === 'yes'
             ? `${p.minorDocType || ''} ${p.idNumber}`
             : p.idNumber,
+        "F. Nacimiento": p.birthDate || '',
+        "Expedición Cédula": p.expeditionDate || '',
         "Género": p.gender === 'male' ? 'Masculino' : 'Femenino',
         "EPS": p.eps || '',
         "Acudiente": p.isMinor === 'yes' ? (p.guardianName || '') : '',
         "Parentesco": p.isMinor === 'yes' ? (p.guardianRelationship || '') : '',
+        "Exp. Acudiente": p.isMinor === 'yes' ? (p.guardianExpeditionDate || '') : '',
+        "F. Nac. Menor": p.isMinor === 'yes' ? (p.minorBirthDate || '') : '',
+        "Exp. Menor": p.isMinor === 'yes' ? (p.minorExpeditionDate || '') : '',
         "Lugar": p.location,
         "Método de Pago": p.paymentMethod,
         "Abono": p.amount,
